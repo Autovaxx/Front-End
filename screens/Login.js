@@ -23,12 +23,15 @@ import {
   Colors,
   MsgBox,
   Line,
-  TextURL,
+  ExtraView,
+  ExtraText,
+  TextLink,
+  TextLinkContent,
 } from './../components/styles';
-import { View, Linking } from 'react-native';
+import { View } from 'react-native';
 
 // Colors
-const { brand, darkLight } = Colors;
+const { brand, darkLight, primary } = Colors;
 
 //Change when input is changed, Blur when inout loses focus, Submit when we submit form, and values for our values
 const Login = () => {
@@ -78,9 +81,11 @@ const Login = () => {
                 <ButtonText>Sign In</ButtonText>
               </StyledButton>
               <Line />
-              <MsgBox>
-                Don't have an account? Tap <TextURL onPress={handleSubmit}>HERE</TextURL> to create an account!
-              </MsgBox>
+              <ExtraView>
+                <ExtraText>
+                  Don't have an account? Tap <TextLinkContent>HERE</TextLinkContent> to create an account!
+                </ExtraText>
+              </ExtraView>
             </StyledFormArea>
           )}
         </Formik>

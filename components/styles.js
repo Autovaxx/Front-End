@@ -23,6 +23,7 @@ export const StyledContainer = styled.View`
   padding-top: ${StatusBarHeight + 60}px;
   background-color: ${primary};
 `;
+
 export const InnerContainer = styled.View`
   flex: 1;
   width: 100%;
@@ -114,11 +115,37 @@ export const Line = styled.View`
   margin-vertical: 15px;
 `;
 
-export const TextURL = styled.Text`
-  color: ${brand};
-  text-align: center;
+// export const TextURL = styled.Text`
+//   color: ${brand};
+//   text-align: center;
+//   font-size: 13px;
+//   font-weight: bold;
+//   text-decoration: underline;
+//   text-decoration-color: ${brand};
+// `;
+
+export const ExtraView = styled.View`
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+`;
+
+export const ExtraText = styled.Text`
+  justify-content: center;
+  align-content: center;
+  color: ${tertiary};
   font-size: 13px;
-  font-weight: bold;
+`;
+
+export const TextLink = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+`;
+
+export const TextLinkContent = styled.Text`
+  color: ${brand};
+  font-size: 13px;
   text-decoration: underline;
   text-decoration-color: ${brand};
 `;
