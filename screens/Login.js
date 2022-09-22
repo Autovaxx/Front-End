@@ -27,11 +27,11 @@ import {
   ExtraText,
   TextLink,
   TextLinkContent,
-} from './../components/styles';
+} from '../components/loginStyles';
 import { View } from 'react-native';
 
 // Colors
-const { brand, darkLight, primary } = Colors;
+const { brand, darkLight } = Colors;
 
 //Change when input is changed, Blur when inout loses focus, Submit when we submit form, and values for our values
 const Login = () => {
@@ -83,7 +83,11 @@ const Login = () => {
               <Line />
               <ExtraView>
                 <ExtraText>
-                  Don't have an account? Tap <TextLinkContent>HERE</TextLinkContent> to create an account!
+                  Don't have an account? Tap
+                  <TextLink>
+                    <TextLinkContent> HERE </TextLinkContent>
+                  </TextLink>
+                  to create an account!
                 </ExtraText>
               </ExtraView>
             </StyledFormArea>

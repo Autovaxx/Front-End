@@ -115,15 +115,6 @@ export const Line = styled.View`
   margin-vertical: 15px;
 `;
 
-// export const TextURL = styled.Text`
-//   color: ${brand};
-//   text-align: center;
-//   font-size: 13px;
-//   font-weight: bold;
-//   text-decoration: underline;
-//   text-decoration-color: ${brand};
-// `;
-
 export const ExtraView = styled.View`
   justify-content: center;
   flex-direction: row;
@@ -135,7 +126,7 @@ export const ExtraText = styled.Text`
   justify-content: center;
   align-content: center;
   color: ${tertiary};
-  font-size: 13px;
+  font-size: 14px;
 `;
 
 export const TextLink = styled.TouchableOpacity`
@@ -145,7 +136,8 @@ export const TextLink = styled.TouchableOpacity`
 
 export const TextLinkContent = styled.Text`
   color: ${brand};
-  font-size: 13px;
+  font-size: 12px;
   text-decoration: underline;
+  font-weight: bold;
   text-decoration-color: ${brand};
 `;
