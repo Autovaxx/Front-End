@@ -21,8 +21,11 @@ import {
   StyledButton,
   ButtonText,
   Colors,
+  MsgBox,
+  Line,
+  TextURL,
 } from './../components/styles';
-import { View } from 'react-native';
+import { View, Linking } from 'react-native';
 
 // Colors
 const { brand, darkLight } = Colors;
@@ -39,7 +42,7 @@ const Login = () => {
         <SubTitle>Account Login</SubTitle>
 
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ userName: '', password: '' }}
           onSubmit={(values) => {
             console.log(values);
           }}
@@ -47,14 +50,14 @@ const Login = () => {
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <StyledFormArea>
               <MyTextInput
-                label="Email Address:"
+                label="User Name:"
                 icon="person-fill"
-                placeholder="jaySmith@gmail.com"
+                placeholder="Jason Smith"
                 placeholderTextColor={darkLight}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
-                keyboardType="email-address"
+                onChangeText={handleChange('userName')}
+                onBlur={handleBlur('userName')}
+                value={values.userName}
+                //keyboardType="email-address"
               />
 
               <MyTextInput
@@ -70,9 +73,14 @@ const Login = () => {
                 hidePassword={hidePassword}
                 setHidePassword={setHidePassword}
               />
+              <MsgBox>...</MsgBox>
               <StyledButton onPress={handleSubmit}>
                 <ButtonText>Sign In</ButtonText>
               </StyledButton>
+              <Line />
+              <MsgBox>
+                Don't have an account? Tap <TextURL onPress={handleSubmit}>HERE</TextURL> to create an account!
+              </MsgBox>
             </StyledFormArea>
           )}
         </Formik>

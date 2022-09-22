@@ -30,8 +30,8 @@ export const InnerContainer = styled.View`
 `;
 
 export const PageLogo = styled.Image`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
 `;
 
 export const PageTitle = styled.Text`
@@ -102,7 +102,23 @@ export const ButtonText = styled.Text`
   font-size: 16px;
 `;
 
-// export const MessageBox = styled.Text`
-//   text-align:center;
-//   font-size: 13px;
-// `;
+export const MsgBox = styled.Text`
+  text-align: center;
+  font-size: 13px;
+`;
+
+export const Line = styled.View`
+  height: 1px;
+  width: 100%;
+  background-color: ${darkLight};
+  margin-vertical: 15px;
+`;
+
+export const TextURL = styled.Text`
+  color: ${brand};
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: underline;
+  text-decoration-color: ${brand};
+`;
