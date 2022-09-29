@@ -40,15 +40,45 @@ const HomeScreen = () => {
           </Text>
         </View>
         <View style={styles.stepsContainer}>
-          <TouchableOpacity>
-            <Ionicons name="folder" size={25} color="#3AA2FB" />
-          </TouchableOpacity>
+          <Ionicons name="folder" size={25} color="#3AA2FB" />
           <View style={styles.innerStepsContainer}>
             <Text style={styles.steps}>User profile</Text>
             <TouchableOpacity>
               <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
             </TouchableOpacity>
           </View>
+        </View>
+        <View style={styles.stepsContainer}>
+          <Ionicons name="folder" size={25} color="#3AA2FB" />
+          <View style={styles.innerStepsContainer}>
+            <Text style={styles.steps}>Vaccination details</Text>
+            <TouchableOpacity>
+              <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.stepsContainer}>
+          <Ionicons name="folder" size={25} color="#3AA2FB" />
+          <View style={styles.innerStepsContainer}>
+            <Text style={styles.steps}>Clinic Search preferences</Text>
+            <TouchableOpacity>
+              <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.innerContainer}>
+          <Text style={styles.subtitle}>Completed</Text>
+        </View>
+        <View style={styles.stepsContainer}>
+          <Ionicons name="checkmark-circle" size={25} color="#2fea6e" />
+          <View style={styles.innerStepsContainer}>
+            <Text style={styles.steps}>Clinic Search preferences</Text>
+          </View>
+        </View>
+        <View style={styles.innerContainer}>
+          <Text style={[styles.subtitle, { paddingTop: 30 }]}>
+            What would you like to do?
+          </Text>
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -66,8 +96,6 @@ const styles = StyleSheet.create({
   innerContainer: {
     flexDirection: "row",
     width: "100%",
-    // borderBottomWidth: 1,
-    // borderColor: "#3AA2FB",
     justifyContent: "center",
   },
   innerTitleContainer: {
@@ -92,7 +120,6 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "row",
     alignItems: "center",
-    //justifyContent: "space-between",
     borderBottomWidth: 1,
     borderColor: "#3AA2FB",
   },
@@ -103,7 +130,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   steps: {
-    fontSize: 20,
+    fontSize: 14,
     color: "#3AA2FB",
     padding: 12,
   },
