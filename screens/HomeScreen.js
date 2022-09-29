@@ -11,13 +11,13 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
 
 export function RequiredSteps() {
-  const steps = [
+  const requiredSteps = [
     { id: 1, name: "User profile" },
     { id: 2, name: "Vaccination details" },
     { id: 3, name: "Clinic search preferences" },
   ];
 
-  return steps.map((step) => {
+  return requiredSteps.map((step) => {
     return (
       <View style={styles.stepsContainer}>
         <Ionicons name="folder" size={25} color="#3AA2FB" />
@@ -26,6 +26,21 @@ export function RequiredSteps() {
           <TouchableOpacity>
             <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
           </TouchableOpacity>
+        </View>
+      </View>
+    );
+  });
+}
+
+export function CompletedSteps() {
+  const completedSteps = [{ id: 1, name: "Clinic Search preferences" }];
+
+  return completedSteps.map((step) => {
+    return (
+      <View style={styles.stepsContainer}>
+        <Ionicons name="checkmark-circle" size={25} color="#2fea6e" />
+        <View style={styles.innerStepsContainer}>
+          <Text style={styles.steps}>{step.name}</Text>
         </View>
       </View>
     );
@@ -83,12 +98,7 @@ const HomeScreen = () => {
         <View style={styles.innerContainer}>
           <Text style={styles.subtitle}>Completed</Text>
         </View>
-        <View style={styles.stepsContainer}>
-          <Ionicons name="checkmark-circle" size={25} color="#2fea6e" />
-          <View style={styles.innerStepsContainer}>
-            <Text style={styles.steps}>Clinic Search preferences</Text>
-          </View>
-        </View>
+        <CompletedSteps></CompletedSteps>
         <View style={styles.innerContainer}>
           <Text style={[styles.subtitle, { paddingTop: 30 }]}>
             What would you like to do?
