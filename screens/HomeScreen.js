@@ -17,9 +17,9 @@ export function RequiredSteps() {
     { id: 3, name: "Clinic search preferences" },
   ];
 
-  return requiredSteps.map((step) => {
+  return requiredSteps.map((step, i) => {
     return (
-      <View style={styles.stepsContainer}>
+      <View key={i} style={styles.stepsContainer}>
         <Ionicons name="folder" size={25} color="#3AA2FB" />
         <View style={styles.innerStepsContainer}>
           <Text style={styles.steps}>{step.name}</Text>
@@ -35,9 +35,9 @@ export function RequiredSteps() {
 export function CompletedSteps() {
   const completedSteps = [{ id: 1, name: "Clinic Search preferences" }];
 
-  return completedSteps.map((step) => {
+  return completedSteps.map((step, i) => {
     return (
-      <View style={styles.stepsContainer}>
+      <View key={i} style={styles.stepsContainer}>
         <Ionicons name="checkmark-circle" size={25} color="#2fea6e" />
         <View style={styles.innerStepsContainer}>
           <Text style={styles.steps}>{step.name}</Text>
@@ -55,9 +55,9 @@ export function OptionButtons() {
     { id: 4, name: "Account Settings" },
   ];
 
-  return buttons.map((button) => {
+  return buttons.map((button, i) => {
     return (
-      <View style={styles.buttonContainer}>
+      <View key={i} style={styles.buttonContainer}>
         <TouchableOpacity onPress={() => {}} style={styles.button}>
           <Text style={styles.buttonText}>{button.name}</Text>
         </TouchableOpacity>
