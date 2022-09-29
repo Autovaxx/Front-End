@@ -32,6 +32,25 @@ export function RequiredSteps() {
   });
 }
 
+export function OptionButtons() {
+  const buttons = [
+    { id: 1, name: "Book Appointments" },
+    { id: 2, name: "View Bookings" },
+    { id: 3, name: "Change Search Preferences" },
+    { id: 4, name: "Account Settings" },
+  ];
+
+  return buttons.map((button) => {
+    return (
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={() => {}} style={styles.button}>
+          <Text style={styles.buttonText}>{button.name}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  });
+}
+
 const HomeScreen = () => {
   const StatusBarHeight = Constants.StatusBarHeight;
 
@@ -75,31 +94,8 @@ const HomeScreen = () => {
             What would you like to do?
           </Text>
         </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.innerButtonContainer}>
-            <View>
-              <TouchableOpacity onPress={() => {}} style={styles.button}>
-                <Text style={styles.buttonText}>Book Appointments</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity onPress={() => {}} style={styles.button}>
-                <Text style={styles.buttonText}>View Bookings</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.innerButtonContainer}>
-            <View>
-              <TouchableOpacity onPress={() => {}} style={styles.button}>
-                <Text style={styles.buttonText}>Change Search Preferences</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity onPress={() => {}} style={styles.button}>
-                <Text style={styles.buttonText}>Account Settings</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+        <View style={styles.parentBtnContainer}>
+          <OptionButtons></OptionButtons>
         </View>
       </KeyboardAvoidingView>
     </ScrollView>
@@ -155,14 +151,16 @@ const styles = StyleSheet.create({
     color: "#3AA2FB",
     padding: "4%",
   },
-  buttonContainer: {
+  parentBtnContainer: {
     marginTop: "5%",
-    width: "100%",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  innerButtonContainer: {
+    flex: 1,
     flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    width: "45%",
   },
   button: {
     width: 140,
