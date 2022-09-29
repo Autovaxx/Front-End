@@ -4,22 +4,43 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image,
-  ImageBackground,
-  useWindowDimensions,
+  ScrollView,
 } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { TextInput } from "react-native";
 import Constants from "expo-constants";
 
+export function RequiredSteps() {
+  const steps = [
+    { id: 1, name: "User profile" },
+    { id: 2, name: "Vaccination details" },
+    { id: 3, name: "Clinic search preferences" },
+  ];
+
+  return steps.map((step) => {
+    return (
+      <View style={styles.stepsContainer}>
+        <Ionicons name="folder" size={25} color="#3AA2FB" />
+        <View style={styles.innerStepsContainer}>
+          <Text style={styles.steps}>{step.name}</Text>
+          <TouchableOpacity>
+            <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  });
+}
+
 const HomeScreen = () => {
-  const { height } = useWindowDimensions();
   const StatusBarHeight = Constants.StatusBarHeight;
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View style={styles.inputContainer}>
+    <ScrollView>
+      <KeyboardAvoidingView
+        style={[styles.container, { marginTop: StatusBarHeight }]}
+        behavior="padding"
+      >
         <View style={styles.innerContainer}>
           <View style={styles.innerTitleContainer}>
             <TouchableOpacity>
@@ -39,33 +60,7 @@ const HomeScreen = () => {
             Here's what you need to do to set up your account.
           </Text>
         </View>
-        <View style={styles.stepsContainer}>
-          <Ionicons name="folder" size={25} color="#3AA2FB" />
-          <View style={styles.innerStepsContainer}>
-            <Text style={styles.steps}>User profile</Text>
-            <TouchableOpacity>
-              <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.stepsContainer}>
-          <Ionicons name="folder" size={25} color="#3AA2FB" />
-          <View style={styles.innerStepsContainer}>
-            <Text style={styles.steps}>Vaccination details</Text>
-            <TouchableOpacity>
-              <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.stepsContainer}>
-          <Ionicons name="folder" size={25} color="#3AA2FB" />
-          <View style={styles.innerStepsContainer}>
-            <Text style={styles.steps}>Clinic Search preferences</Text>
-            <TouchableOpacity>
-              <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <RequiredSteps></RequiredSteps>
         <View style={styles.innerContainer}>
           <Text style={styles.subtitle}>Completed</Text>
         </View>
@@ -80,8 +75,34 @@ const HomeScreen = () => {
             What would you like to do?
           </Text>
         </View>
-      </View>
-    </KeyboardAvoidingView>
+        <View style={styles.buttonContainer}>
+          <View style={styles.innerButtonContainer}>
+            <View>
+              <TouchableOpacity onPress={() => {}} style={styles.button}>
+                <Text style={styles.buttonText}>Book Appointments</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity onPress={() => {}} style={styles.button}>
+                <Text style={styles.buttonText}>View Bookings</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.innerButtonContainer}>
+            <View>
+              <TouchableOpacity onPress={() => {}} style={styles.button}>
+                <Text style={styles.buttonText}>Change Search Preferences</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity onPress={() => {}} style={styles.button}>
+                <Text style={styles.buttonText}>Account Settings</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -90,8 +111,8 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 25,
-    paddingTop: 60,
+    padding: "5%",
+    paddingTop: "10%",
   },
   innerContainer: {
     flexDirection: "row",
@@ -107,13 +128,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: "bold",
-    padding: 10,
+    padding: "3%",
   },
   subtitle: {
     width: "100%",
     fontSize: 20,
     fontWeight: "bold",
-    padding: 10,
+    padding: "3%",
   },
   stepsContainer: {
     marginLeft: 10,
@@ -132,6 +153,29 @@ const styles = StyleSheet.create({
   steps: {
     fontSize: 14,
     color: "#3AA2FB",
-    padding: 12,
+    padding: "4%",
+  },
+  buttonContainer: {
+    marginTop: "5%",
+    width: "100%",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  innerButtonContainer: {
+    flexDirection: "row",
+  },
+  button: {
+    width: 140,
+    height: 140,
+    backgroundColor: "#9cc9f1",
+    justifyContent: "center",
+    borderRadius: 10,
+    margin: 4,
+  },
+  buttonText: {
+    color: "black",
+    fontWeight: "700",
+    fontSize: 15,
+    textAlign: "center",
   },
 });
