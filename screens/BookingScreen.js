@@ -11,6 +11,28 @@ import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
 
+export function Bookings() {
+  const bookings = [
+    { id: 1, name: "Shoppers Drug Mart", address: "address" },
+    { id: 2, name: "Rexall", address: "address" },
+    { id: 3, name: "Shoppers Drug Mart", address: "address" },
+  ];
+
+  return bookings.map((booking, i) => {
+    return (
+      <View key={i} style={styles.bookingContainer}>
+        <View style={styles.innerBookingContainer}>
+          <Text style={styles.booking}>{booking.name}</Text>
+          <Text>{booking.address}</Text>
+        </View>
+        <TouchableOpacity style={styles.bookNowBtnContainer}>
+          <Text style={styles.bookNowBtn}>Book</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  });
+}
+
 const BookingScreen = () => {
   const StatusBarHeight = Constants.StatusBarHeight;
   return (
@@ -41,6 +63,7 @@ const BookingScreen = () => {
             />
           </View>
         </View>
+        <Bookings></Bookings>
       </KeyboardAvoidingView>
     </ScrollView>
   );
@@ -69,6 +92,7 @@ const styles = StyleSheet.create({
     width: "90%",
     marginLeft: "5%",
     marginTop: "5%",
+    marginBottom: "5%",
   },
   innerInputContainer: {
     flexDirection: "row",
@@ -94,5 +118,38 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     padding: "3%",
+  },
+  bookingContainer: {
+    marginLeft: 10,
+    width: "90%",
+    marginLeft: "5%",
+    marginBottom: "3%",
+    height: "45%",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#9cc9f1",
+  },
+  innerBookingContainer: {
+    width: "70%",
+    height: "100%",
+    flexDirection: "column",
+    padding: "5%",
+  },
+  booking: {
+    fontWeight: "bold",
+  },
+  bookNowBtnContainer: {
+    height: "100%",
+    width: "30%",
+    position: "relative",
+  },
+  bookNowBtn: {
+    padding: 10,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    color: "#3a74fb",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 });
