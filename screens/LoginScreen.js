@@ -13,13 +13,52 @@ import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Logo from "../assets/logo.png";
 import Background from "../assets/background.jpg";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase-config";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const LoginScreen = () => {
   const { height } = useWindowDimensions();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
+
+  const app = initializeApp(firebaseConfig)
+  const auth = getAuth(app);
+  const  navigation = useNavigation()
+
+  const handleCreateAccount = () => {
+    console.log('Register pressed')
+    createUserWithEmailAndPassword(auth, email, password)
+    .then( (userCredential) => {
+      console.log("Account created")
+      const user = userCredential.user;
+      console.log(user)
+    })
+    .catch( error => {
+      console.log(error)
+    })
+  }
+
+  const handleSignIn = () => {
+    console.log('Sign in pressed')
+    signInWithEmailAndPassword(auth, email, password)
+    .then( (userCredential) => {
+      console.log('singed in')
+      const user  = userCredential.user
+      console.log(user)
+      navigation.navigate('Home')
+
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
   return (
+
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ImageBackground
         style={styles.imgBackground}
@@ -68,13 +107,13 @@ const LoginScreen = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {}} style={styles.button}>
+          <TouchableOpacity onPress={handleSignIn} style={styles.button}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={handleCreateAccount}
             style={[styles.button, styles.buttonOutline]}
           >
             <Text style={styles.buttonOutlineText}>Register</Text>
