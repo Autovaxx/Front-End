@@ -36,36 +36,36 @@ export function Bookings() {
 const BookingScreen = () => {
   const StatusBarHeight = Constants.StatusBarHeight;
   return (
-    <ScrollView>
-      <KeyboardAvoidingView
-        style={[styles.container, { marginTop: StatusBarHeight }]}
-        behavior="padding"
-      >
-        <View style={styles.innerContainer}>
-          <View style={styles.innerTitleContainer}>
-            <TouchableOpacity>
-              <Ionicons name="arrow-back" size={25} />
-            </TouchableOpacity>
-            <Text style={styles.title}>Applications</Text>
-            <TouchableOpacity>
-              <Ionicons name="notifications" size={25} />
-            </TouchableOpacity>
-          </View>
+    <KeyboardAvoidingView
+      style={[styles.container, { marginTop: StatusBarHeight }]}
+      behavior="padding"
+    >
+      <View style={styles.innerContainer}>
+        <View style={styles.innerTitleContainer}>
+          <TouchableOpacity>
+            <Ionicons name="arrow-back" size={25} />
+          </TouchableOpacity>
+          <Text style={styles.title}>Applications</Text>
+          <TouchableOpacity>
+            <Ionicons name="notifications" size={25} />
+          </TouchableOpacity>
         </View>
-        <View style={styles.inputContainer}>
-          <View style={styles.innerInputContainer}>
-            <Ionicons name="search" size={24} color="#FB2876" />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter a location"
-              autoCorrect={false}
-              autoCapitalize={false}
-            />
-          </View>
+      </View>
+      <View style={styles.inputContainer}>
+        <View style={styles.innerInputContainer}>
+          <Ionicons name="search" size={24} color="#FB2876" />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter a location"
+            autoCorrect={false}
+            autoCapitalize={false}
+          />
         </View>
+      </View>
+      <ScrollView>
         <Bookings></Bookings>
-      </KeyboardAvoidingView>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     flex: 1,
-    color: "white",
   },
   title: {
     fontSize: 25,
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
     width: "90%",
     marginLeft: "5%",
     marginBottom: "3%",
-    height: "45%",
+    height: "70%",
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#9cc9f1",
