@@ -9,6 +9,8 @@ import {
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export function RequiredSteps() {
   const requiredSteps = [
@@ -48,17 +50,26 @@ export function CompletedSteps() {
 }
 
 export function OptionButtons() {
+  const navigation = useNavigation();
+  const handleViewBookings = () => {
+    console.log("View Bookings page");
+    navigation.navigate("ViewBooking");
+  };
+  const handleHome = () => {
+    console.log("View Home page");
+    navigation.navigate("Home");
+  };
   const buttons = [
-    { id: 1, name: "Book Appointments" },
-    { id: 2, name: "View Bookings" },
-    { id: 3, name: "Change Search Preferences" },
-    { id: 4, name: "Account Settings" },
+    { id: 1, name: "Book Appointments", route: handleHome },
+    { id: 2, name: "View Bookings", route: handleViewBookings },
+    { id: 3, name: "Change Search Preferences", route: handleHome },
+    { id: 4, name: "Account Settings", route: handleHome },
   ];
 
   return buttons.map((button, i) => {
     return (
       <View key={i} style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
+        <TouchableOpacity onPress={button.route} style={styles.button}>
           <Text style={styles.buttonText}>{button.name}</Text>
         </TouchableOpacity>
       </View>
