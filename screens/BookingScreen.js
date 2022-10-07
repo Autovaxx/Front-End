@@ -10,6 +10,8 @@ import {
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export function Bookings() {
   const bookings = [
@@ -34,6 +36,11 @@ export function Bookings() {
 }
 
 const BookingScreen = () => {
+  const navigation = useNavigation();
+  const handleHome = () => {
+    console.log("View Home page");
+    navigation.navigate("Home");
+  };
   const StatusBarHeight = Constants.StatusBarHeight;
   return (
     <KeyboardAvoidingView
@@ -42,24 +49,13 @@ const BookingScreen = () => {
     >
       <View style={styles.innerContainer}>
         <View style={styles.innerTitleContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleHome}>
             <Ionicons name="arrow-back" size={25} />
           </TouchableOpacity>
           <Text style={styles.title}>Applications</Text>
           <TouchableOpacity>
             <Ionicons name="notifications" size={25} />
           </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.inputContainer}>
-        <View style={styles.innerInputContainer}>
-          <Ionicons name="search" size={24} color="#FB2876" />
-          <TextInput
-            style={styles.input}
-            placeholder="Enter a location"
-            autoCorrect={false}
-            autoCapitalize={false}
-          />
         </View>
       </View>
       <ScrollView>
@@ -87,25 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-  },
-  inputContainer: {
-    width: "90%",
-    marginLeft: "5%",
-    marginTop: "5%",
-    marginBottom: "5%",
-  },
-  innerInputContainer: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#3AA2FB",
-    alignItems: "center",
-  },
-  input: {
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    borderRadius: 10,
-    marginTop: 5,
-    flex: 1,
+    marginBottom: "20%",
   },
   title: {
     fontSize: 25,
