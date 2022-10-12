@@ -13,7 +13,11 @@ import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Logo from "../assets/logo.png";
 import Background from "../assets/background.jpg";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase-config";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
@@ -25,40 +29,38 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
 
-  const app = initializeApp(firebaseConfig)
+  const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const  navigation = useNavigation()
+  const navigation = useNavigation();
 
   const handleCreateAccount = () => {
-    console.log('Register pressed')
+    console.log("Register pressed");
     createUserWithEmailAndPassword(auth, email, password)
-    .then( (userCredential) => {
-      console.log("Account created")
-      const user = userCredential.user;
-      console.log(user)
-    })
-    .catch( error => {
-      console.log(error)
-    })
-  }
+      .then((userCredential) => {
+        console.log("Account created");
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleSignIn = () => {
-    console.log('Sign in pressed')
+    console.log("Sign in pressed");
     signInWithEmailAndPassword(auth, email, password)
-    .then( (userCredential) => {
-      console.log('singed in')
-      const user  = userCredential.user
-      console.log(user)
-      navigation.navigate('Home')
-
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
+      .then((userCredential) => {
+        console.log("singed in");
+        const user = userCredential.user;
+        console.log(user);
+        navigation.navigate("Home");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
-
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ImageBackground
         style={styles.imgBackground}
