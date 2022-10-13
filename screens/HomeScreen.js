@@ -13,10 +13,16 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export function RequiredSteps() {
+  const navigation = useNavigation();
+
+  const handleProfile = () => {
+    navigation.navigate("Profile");
+  };
+
   const requiredSteps = [
-    { id: 1, name: "User profile" },
-    { id: 2, name: "Vaccination details" },
-    { id: 3, name: "Clinic search preferences" },
+    { id: 1, name: "User profile", route: handleProfile },
+    { id: 2, name: "Vaccination details", route: handleProfile },
+    { id: 3, name: "Clinic search preferences", route: handleProfile },
   ];
 
   return requiredSteps.map((step, i) => {
@@ -25,7 +31,7 @@ export function RequiredSteps() {
         <Ionicons name="folder" size={25} color="#3AA2FB" />
         <View style={styles.innerStepsContainer}>
           <Text style={styles.steps}>{step.name}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={step.route}>
             <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
           </TouchableOpacity>
         </View>
