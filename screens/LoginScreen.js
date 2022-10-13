@@ -16,6 +16,7 @@ import Logo from "../assets/logo.png";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
+import {getUserDocument} from "../firebase/firebase-login-getData"
 
 const LoginScreen = ({ navigation }) => {
   const { height } = useWindowDimensions();
@@ -38,6 +39,8 @@ const LoginScreen = ({ navigation }) => {
         const user = userCredential.user;
         console.log(user);
         navigation.navigate("Home");
+
+        console.log(`This is the user document: \n`)
       })
       .catch((error) => {
         console.log(error);
