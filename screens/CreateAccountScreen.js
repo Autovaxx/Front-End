@@ -5,56 +5,56 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Image,
   ImageBackground,
-  useWindowDimensions,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getApp } from "firebase/app";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import Logo from "../assets/logo.png";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../firebase-config";
+import React, { useState } from "react";
 
-const LoginScreen = ({ navigation }) => {
-  const { height } = useWindowDimensions();
+const CreateAccountScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
 
-  const app = initializeApp(firebaseConfig, "autovaxx");
+  const app = getApp("autovaxx");
   const auth = getAuth(app);
 
-  const goToRegister = () => {
-    navigation.navigate("CreateAccount");
+  const goToLogin = () => {
+    navigation.navigate("Login");
   };
-  
-  const handleSignIn = () => {
-    console.log("Sign in pressed");
-    signInWithEmailAndPassword(auth, email, password)
+  const handleCreateAccount = () => {
+    if (password !== confirmPassword) {
+      Alert.alert(
+        "Error",
+        "Passwords do not match",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              setConfirmPassword("");
+              setPassword("");
+            },
+          },
+        ],
+        { cancelable: true }
+      );
+      return;
+    }
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log("singed in");
+        console.log("Account created");
         const user = userCredential.user;
         console.log(user);
         navigation.navigate("Home");
       })
       .catch((error) => {
         console.log(error);
-        Alert.alert(
-          "Error",
-          error.message,
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                setEmail("");
-                setPassword("");
-              },
-            },
-          ],
-          { cancelable: true }
-        );
+        Alert.alert("Error", error.message, [{ text: "OK" }], {
+          cancelable: true,
+        });
       });
   };
 
@@ -65,11 +65,6 @@ const LoginScreen = ({ navigation }) => {
         resizeMode="cover"
         source={require("../assets/background.jpg")}
       >
-        <Image
-          source={Logo}
-          style={[styles.logo, { height: height * 0.25 }]}
-          resizeMode="contain"
-        />
         <View style={styles.inputContainer}>
           <View style={styles.innerInputContainer}>
             <Ionicons name="person" size={24} color="#FB2876" />
@@ -95,7 +90,28 @@ const LoginScreen = ({ navigation }) => {
               autoCapitalize={false}
               value={password}
               onChangeText={(text) => setPassword(text)}
-            ></TextInput>
+            />
+            <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+              <Ionicons
+                name={hidePassword ? "md-eye-off" : "md-eye"}
+                size={30}
+                color={"#9CA3AF"}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.innerInputContainer}>
+            <Ionicons name="md-lock-closed" size={24} color="#FB2876" />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              placeholderTextColor={"white"}
+              secureTextEntry={hidePassword}
+              autoCorrect={false}
+              autoCapitalize={false}
+              value={confirmPassword}
+              onChangeText={(text) => setConfirmPassword(text)}
+            />
             <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
               <Ionicons
                 name={hidePassword ? "md-eye-off" : "md-eye"}
@@ -105,18 +121,17 @@ const LoginScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={handleSignIn} style={styles.button}>
-            <Text style={styles.buttonText}>Login</Text>
+          <TouchableOpacity onPress={handleCreateAccount} style={styles.button}>
+            <Text style={styles.buttonText}>Create Account</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
+            onPress={goToLogin}
             style={[styles.button, styles.buttonOutline]}
-            onPress={goToRegister}
           >
-            <Text style={styles.buttonOutlineText}>Register</Text>
+            <Text style={styles.buttonOutlineText}>Return to Login</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -124,7 +139,7 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-export default LoginScreen;
+export default CreateAccountScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -133,15 +148,8 @@ const styles = StyleSheet.create({
   imgBackground: {
     width: "100%",
     height: "100%",
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  logo: {
-    width: "70%",
-    maxWidth: 300,
-    height: 200,
-    marginBottom: "10%",
   },
   inputContainer: {
     width: "80%",
@@ -174,12 +182,6 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 10,
   },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: -20,
-    borderColor: "#FB2876",
-    borderWidth: 2,
-  },
   buttonText: {
     color: "white",
     fontWeight: "700",
@@ -189,5 +191,11 @@ const styles = StyleSheet.create({
     color: "#FB2876",
     fontWeight: "700",
     fontSize: 16,
+  },
+  buttonOutline: {
+    backgroundColor: "white",
+    marginTop: -20,
+    borderColor: "#FB2876",
+    borderWidth: 2,
   },
 });
