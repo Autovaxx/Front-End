@@ -5,6 +5,7 @@ import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import ContactScreen from "./screens/ContactScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
+import BookingScreen from "./screens/BookingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,11 @@ export default function App() {
           options={{ headerShown: false }}
           name="Contact"
           component={ContactScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ViewBooking"
+          component={BookingScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

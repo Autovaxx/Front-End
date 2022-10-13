@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation }) => {
   const goToRegister = () => {
     navigation.navigate("CreateAccount");
   };
-
+  
   const handleSignIn = () => {
     console.log("Sign in pressed");
     signInWithEmailAndPassword(auth, email, password)
