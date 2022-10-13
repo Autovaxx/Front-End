@@ -38,9 +38,10 @@ const LoginScreen = ({ navigation }) => {
         console.log("singed in");
         const user = userCredential.user;
         console.log(user);
+
         navigation.navigate("Home");
 
-        console.log(`This is the user document: \n`)
+        getUserDocument(userCredential.user.uid)
       })
       .catch((error) => {
         console.log(error);
