@@ -27,15 +27,15 @@ export function RequiredSteps() {
 
   return requiredSteps.map((step, i) => {
     return (
-      <View key={i} style={styles.stepsContainer}>
-        <Ionicons name="folder" size={25} color="#3AA2FB" />
-        <View style={styles.innerStepsContainer}>
-          <Text style={styles.steps}>{step.name}</Text>
-          <TouchableOpacity onPress={step.route}>
+      <TouchableOpacity onPress={step.route}>
+        <View key={i} style={styles.stepsContainer}>
+          <Ionicons name="folder" size={25} color="#3AA2FB" />
+          <View style={styles.innerStepsContainer}>
+            <Text style={styles.steps}>{step.name}</Text>
             <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
-          </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   });
 }
