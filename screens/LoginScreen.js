@@ -15,7 +15,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Logo from "../assets/logo.png";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../firebase-config";
+import { firebaseConfig } from "../firebase/firebase-config";
 
 const LoginScreen = ({ navigation }) => {
   const { height } = useWindowDimensions();
