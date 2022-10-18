@@ -57,6 +57,10 @@ export function CompletedSteps() {
 
 export function OptionButtons() {
   const navigation = useNavigation();
+  const handleSearchPref = () => {
+    console.log("Search Preferences page");
+    navigation.navigate("SearchPref");
+  };
   const handleViewBookings = () => {
     console.log("View Bookings page");
     navigation.navigate("ViewBooking");
@@ -68,7 +72,7 @@ export function OptionButtons() {
   const buttons = [
     { id: 1, name: "Book Appointments", route: handleHome },
     { id: 2, name: "View Bookings", route: handleViewBookings },
-    { id: 3, name: "Change Search Preferences", route: handleHome },
+    { id: 3, name: "Change Search Preferences", route: handleSearchPref },
     { id: 4, name: "Account Settings", route: handleHome },
   ];
 
