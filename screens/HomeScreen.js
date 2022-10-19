@@ -9,8 +9,7 @@ import {
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
 
 export function RequiredSteps() {
   const navigation = useNavigation();
@@ -23,34 +22,21 @@ export function RequiredSteps() {
     { id: 1, name: "User profile", route: handleProfile },
     { id: 2, name: "Vaccination details", route: handleProfile },
     { id: 3, name: "Clinic search preferences", route: handleProfile },
+    { id: 4, name: "Contact Information", route: handleProfile },
   ];
 
   return requiredSteps.map((step, i) => {
     return (
-      <TouchableOpacity onPress={step.route}>
-        <View key={i} style={styles.stepsContainer}>
-          <Ionicons name="folder" size={25} color="#3AA2FB" />
+      <TouchableOpacity key={i} onPress={step.route}>
+        <View style={styles.stepsContainer}>
+          <Ionicons name="close-circle" size={25} color="#ff0000" />
+          {/*<Ionicons name="checkmark-circle" size={25} color="#2fea6e" />*/}
           <View style={styles.innerStepsContainer}>
             <Text style={styles.steps}>{step.name}</Text>
             <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
           </View>
         </View>
       </TouchableOpacity>
-    );
-  });
-}
-
-export function CompletedSteps() {
-  const completedSteps = [{ id: 1, name: "Clinic Search preferences" }];
-
-  return completedSteps.map((step, i) => {
-    return (
-      <View key={i} style={styles.stepsContainer}>
-        <Ionicons name="checkmark-circle" size={25} color="#2fea6e" />
-        <View style={styles.innerStepsContainer}>
-          <Text style={styles.steps}>{step.name}</Text>
-        </View>
-      </View>
     );
   });
 }
@@ -116,10 +102,6 @@ const HomeScreen = () => {
           </Text>
         </View>
         <RequiredSteps></RequiredSteps>
-        <View style={styles.innerContainer}>
-          <Text style={styles.subtitle}>Completed</Text>
-        </View>
-        <CompletedSteps></CompletedSteps>
         <View style={styles.innerContainer}>
           <Text style={[styles.subtitle, { paddingTop: 30 }]}>
             What would you like to do?

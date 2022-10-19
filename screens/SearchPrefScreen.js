@@ -11,6 +11,7 @@ import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
+import CustomDatePicker from "../components/datePicker";
 
 const SearchPrefScreen = () => {
   const navigation = useNavigation();
@@ -35,6 +36,10 @@ const SearchPrefScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.innerDateContainer}>
+        <Text style={styles.datetitle}>Start Date:</Text>
+        <CustomDatePicker />
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -58,6 +63,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  innerDateContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "center",
+  },
   title: {
     fontSize: 25,
     fontWeight: "bold",
@@ -65,6 +75,12 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     width: "100%",
+    fontSize: 20,
+    fontWeight: "bold",
+    padding: "3%",
+  },
+  datetitle: {
+    width: "50%",
     fontSize: 20,
     fontWeight: "bold",
     padding: "3%",
