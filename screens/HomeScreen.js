@@ -14,6 +14,10 @@ import { useNavigation } from "@react-navigation/native";
 export function RequiredSteps() {
   const navigation = useNavigation();
 
+  const handleContact = () => {
+    console.log("Contact Information page");
+    navigation.navigate("Contact");
+  };
   const handleProfile = () => {
     navigation.navigate("Profile");
   };
@@ -22,7 +26,7 @@ export function RequiredSteps() {
     { id: 1, name: "User profile", route: handleProfile },
     { id: 2, name: "Vaccination details", route: handleProfile },
     { id: 3, name: "Clinic search preferences", route: handleProfile },
-    { id: 4, name: "Contact Information", route: handleProfile },
+    { id: 4, name: "Contact Information", route: handleContact },
   ];
 
   return requiredSteps.map((step, i) => {

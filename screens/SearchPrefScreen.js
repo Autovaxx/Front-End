@@ -2,10 +2,8 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
-  ScrollView,
 } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
