@@ -9,8 +9,7 @@ import {
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
 
 export function RequiredSteps() {
   const navigation = useNavigation();
@@ -19,9 +18,13 @@ export function RequiredSteps() {
     navigation.navigate("Profile");
   };
 
+  const handleVaccinations = () => {
+    navigation.navigate("VaccineInfo");
+  };
+
   const requiredSteps = [
     { id: 1, name: "User profile", route: handleProfile },
-    { id: 2, name: "Vaccination details", route: handleProfile },
+    { id: 2, name: "Vaccination details", route: handleVaccinations },
     { id: 3, name: "Clinic search preferences", route: handleProfile },
   ];
 

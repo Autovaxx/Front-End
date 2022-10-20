@@ -7,6 +7,7 @@ import ContactScreen from "./screens/ContactScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
 import BookingScreen from "./screens/BookingScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import VaccineInfoScreen from "./screens/VaccineInfoScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,11 @@ export default function App() {
           options={{ headerShown: false }}
           name="Profile"
           component={ProfileScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="VaccineInfo"
+          component={VaccineInfoScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
