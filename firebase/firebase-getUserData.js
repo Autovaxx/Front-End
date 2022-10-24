@@ -10,8 +10,15 @@ export const getUserDocument = async (userCred) =>{
      try{
         const userData = await getDoc(doc(db, 'users', userCred))
 
-        console.log(`User doc data: ${JSON.stringify(userData.data(), null, 4)}`)
+        let userDataJSON = JSON.stringify(userData.data(), null, 4)
+
+        console.log(`User doc data: ${userDataJSON}`)
+        
+        return userDataJSON
+
      }catch (error) {
         console.log(`Error fetching document:\n ${error}`)
      }
 }
+
+firebaseConfig.auth

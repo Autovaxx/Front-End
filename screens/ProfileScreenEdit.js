@@ -36,7 +36,7 @@ export function ProfileDetails() {
   });
 }
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreenEdit = ({ navigation }) => {
   const StatusBarHeight = Constants.StatusBarHeight;
 
   const handleHome = () => {
@@ -70,7 +70,7 @@ const ProfileScreen = ({ navigation }) => {
   );
 };
 
-export default ProfileScreen;
+export default ProfileScreenEdit;
 
 const styles = StyleSheet.create({
   container: {

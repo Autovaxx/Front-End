@@ -10,14 +10,14 @@ const address = {
     unitNumber: ""
 }
 
-const appointment = {
+const appointment = [{
     booked: false,
     date: "",
     pharmacy: "",
     pharmacy_address: "",
     time: "",
     vaccine: ""
-}
+}]
 
 const emergency_contact = {
     firstName: "",
