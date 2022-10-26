@@ -6,7 +6,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ContactScreen from "./screens/ContactScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
 import BookingScreen from "./screens/BookingScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import ProfileScreenMain from "./screens/ProfileScreenMain";
 import VaccineInfoScreen from "./screens/VaccineInfoScreen";
 import SearchPrefScreen from "./screens/SearchPrefScreen";
 
@@ -45,7 +45,7 @@ export default function App() {
         <Stack.Screen
           options={{ headerShown: false }}
           name="Profile"
-          component={ProfileScreen}
+          component={ProfileScreenMain}
         />
         <Stack.Screen
           options={{ headerShown: false }}

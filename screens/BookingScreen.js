@@ -6,34 +6,85 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getUserDocument } from "../firebase/firebase-getUserData";
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from "../firebase/firebase-config"
+import {
+  Avatar, 
+  Title,
+  Caption, 
+  TouchableRipple,
+  Card,
+  Button,
+  List,
+  Divider,
+  Paragraph,
+  DataTable
+} from 'react-native-paper'
+import { Colors } from "react-native/Libraries/NewAppScreen";
+
 
 export function Bookings() {
-  const bookings = [
-    { id: 1, name: "Shoppers Drug Mart", address: "address" },
-    { id: 2, name: "Rexall", address: "address" },
-    { id: 3, name: "Shoppers Drug Mart", address: "address" },
-  ];
 
-  return bookings.map((booking, i) => {
+  // Keeps track of the appointment data
+  const [aptData, setAptData] = useState([])
+
+  const app = initializeApp(firebaseConfig, "autovaxx");
+  const auth = getAuth(app);
+
+  useEffect( () => {
+    getUserDocument(auth.currentUser.uid)
+      .then( (apt_data) => JSON.parse(apt_data))
+      .then( (apt_data_json) => setAptData(apt_data_json.appointment))
+      .catch( (error) => console.log('Could not get apt data'))
+  }, [])
+  
+  return aptData.map((aptData, i) => {
     return (
-      <View key={i} style={styles.bookingContainer}>
-        <View style={styles.innerBookingContainer}>
-          <Text style={styles.booking}>{booking.name}</Text>
-          <Text>{booking.address}</Text>
+      <View key={i}>
+        {/* <View style={styles.innerBookingContainer}>
+          <Text style={styles.booking}>{aptData.pharmacy}</Text>
+          <Text>{aptData.pharmacy_address}</Text>
+          <Text>{aptData.date}</Text>
+          <Text>{aptData.time}</Text>
+          <Text>{aptData.vaccine}</Text>
         </View>
-        <TouchableOpacity style={styles.bookNowBtnContainer}>
-          <Text style={styles.bookNowBtn}>Book</Text>
-        </TouchableOpacity>
+        <View style={styles.bookNowBtnContainer}>
+          <Text style={styles.bookNowBtn}>{aptData.booked ? 'Booked' : 'Waitlisted'}</Text>
+        </View> */}
+
+        <Card>
+          <Card.Content>
+            <Title>{aptData.pharmacy}</Title>
+              <DataTable>
+                <DataTable.Row>
+                  <DataTable.Cell>{aptData.pharmacy_address}</DataTable.Cell>
+                </DataTable.Row>
+                <DataTable.Row>
+                  <DataTable.Cell>{aptData.vaccine}</DataTable.Cell>
+                  <DataTable.Cell>{aptData.date}</DataTable.Cell>
+                  <DataTable.Cell>{aptData.time}</DataTable.Cell>
+                </DataTable.Row>
+              </DataTable>
+              <Button>
+                {aptData.booked ? 'Booked' : 'Waitlisted'}
+              </Button>
+              
+          </Card.Content>
+        </Card>
       </View>
     );
   });
 }
 
 const BookingScreen = () => {
+
   const navigation = useNavigation();
   const handleHome = () => {
     console.log("View Home page");
@@ -56,9 +107,11 @@ const BookingScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+
       <ScrollView>
         <Bookings></Bookings>
       </ScrollView>
+
     </KeyboardAvoidingView>
   );
 };
@@ -128,3 +181,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+
+// Used to store our appointments
+// let appointments = []
+
+// getUserDocument(auth.currentUser.uid).then( (user_data) => {
+//   appointments = JSON.parse(user_data)
+  
+//   appointments.appointment.forEach( (apt) => {
+//     bookings.push({
+//       id: 2,
+//       pharmacy: apt.pharmacy,
+//       address: apt.pharmacy_address,
+//       date: apt.date,
+//       time: apt.time,
+//       vaccine: apt.vaccine
+//     })
+//   })
+
+//   console.log(bookings)
+// });
