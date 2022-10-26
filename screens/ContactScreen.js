@@ -10,6 +10,7 @@ import {
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
+import { useNavigation } from "@react-navigation/native";
 
 export function ContactDetails() {
   const contactDetails = [
@@ -47,6 +48,11 @@ export function EmergencyDetails() {
 
 const ContactScreen = () => {
   const StatusBarHeight = Constants.StatusBarHeight;
+  const navigation = useNavigation();
+  const handleHome = () => {
+    console.log("View Home page");
+    navigation.navigate("Home");
+  };
 
   return (
     <ScrollView>
@@ -55,7 +61,12 @@ const ContactScreen = () => {
         behavior="padding"
       >
         <TouchableOpacity>
-          <Ionicons name="arrow-back" size={25} color="#fb3a6a" />
+          <Ionicons
+            onPress={handleHome}
+            name="arrow-back"
+            size={25}
+            color="#fb3a6a"
+          />
         </TouchableOpacity>
         <View style={styles.innerContainer}>
           <View style={[styles.innerTitleContainer, { marginTop: "1%" }]}>
