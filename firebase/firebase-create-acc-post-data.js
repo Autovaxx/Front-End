@@ -14,6 +14,7 @@ export const createUserCollection = async (userCred, emailAddress) => {
         appointment: dbModels.appointment,
         'emergency contact': dbModels.emergency_contact,
         'previous vaccines': dbModels.previous_vaccine,
-        'user_profile': dbModels.user_profile
+        'user_profile': dbModels.user_profile,
+        'required_steps': dbModels.required_steps
     })
 }

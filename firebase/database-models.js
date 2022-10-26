@@ -49,4 +49,10 @@ const user_profile = {
     phoneNumber: ""
 }
 
-export {address, appointment, emergency_contact, previous_vaccine, user_profile} 
+const required_steps ={
+    userProfile: false,
+    vaccinationDetails: false,
+    searchPreferences: false
+}
+
+export {address, appointment, emergency_contact, previous_vaccine, user_profile, required_steps} 
