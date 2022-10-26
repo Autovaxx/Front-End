@@ -16,7 +16,7 @@ import Logo from "../assets/logo.png";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
-import {getUserDocument} from "../firebase/firebase-getUserData"
+import { getUserDocument } from "../firebase/firebase-getUserData"
 
 const LoginScreen = ({ navigation }) => {
   const { height } = useWindowDimensions();

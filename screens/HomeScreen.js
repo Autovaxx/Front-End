@@ -86,6 +86,8 @@ export function OptionButtons() {
 const HomeScreen = () => {
   const StatusBarHeight = Constants.StatusBarHeight;
 
+  
+
   return (
     <ScrollView>
       <KeyboardAvoidingView
