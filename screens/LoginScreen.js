@@ -33,17 +33,11 @@ const LoginScreen = ({ navigation }) => {
   useEffect( () => {
      const unsubscribe = auth.onAuthStateChanged(user => {
       if(user) {
-        navigation.navigate('Home')
-        console.log('Did auth')
-        console.log(user)
-
-      }
-      else{
-        console.log('Did not auth')
+        navigation.replace('Home')
       }
      })
      return unsubscribe;
-  }, [])
+  })
 
   const goToRegister = () => {
     navigation.navigate("CreateAccount");
@@ -56,6 +50,7 @@ const LoginScreen = ({ navigation }) => {
         console.log("signed in");
         const user = userCredential.user;
         console.log(user);
+        
 
         // navigation.navigate("Home");
         // getUserDocument(userCredential.user.uid)
