@@ -2,7 +2,6 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   ScrollView,
@@ -29,6 +28,7 @@ import {
   DataTable
 } from 'react-native-paper'
 import { Colors } from "react-native/Libraries/NewAppScreen";
+
 
 export function Bookings() {
 
