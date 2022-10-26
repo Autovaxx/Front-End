@@ -5,11 +5,17 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  BackHandler
 } from "react-native";
-import React from "react";
+import { Button } from 'react-native-paper'
+import React, {Component, useEffect} from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase/firebase-config";
+import {useRoute, useFocusEffect} from '@react-navigation/native';
+import { getAuth, signOut } from "firebase/auth";
 
 export function RequiredSteps() {
   const navigation = useNavigation();
@@ -82,7 +88,38 @@ export function OptionButtons() {
 }
 
 const HomeScreen = () => {
+
   const StatusBarHeight = Constants.StatusBarHeight;
+  const app = initializeApp(firebaseConfig, "autovaxx");
+  const auth = getAuth(app);
+  const navigation = useNavigation()
+  const route = useRoute()
+
+  // Disabling the devices built-in back button for the current home page 
+  useFocusEffect(
+    React.useCallback( () =>{
+      const onBackPress = () => {
+        if (route.name === 'Home'){
+          return true;
+        }else {
+          return false;
+        }
+      }
+      BackHandler.addEventListener('hardwareBackPress', onBackPress)
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress)
+      }
+    }, [route]),
+  )
+
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then( () => {
+        navigation.replace("Login")
+      })
+  }
 
   return (
     <ScrollView>
@@ -118,8 +155,21 @@ const HomeScreen = () => {
         <View style={styles.parentBtnContainer}>
           <OptionButtons></OptionButtons>
         </View>
+
       </KeyboardAvoidingView>
+      <View style={{ 
+        marginTop: 25,
+              }}>
+      <Button
+            icon="account-edit-outline"
+            mode="text"
+            textColor="black"
+            onPress={(handleSignOut)}>
+                Sign Out
+      </Button>
+      </View>
     </ScrollView>
+    
   );
 };
 
