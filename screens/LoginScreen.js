@@ -18,6 +18,7 @@ import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
 import {getUserDocument} from "../firebase/firebase-getUserData"
 
+
 const LoginScreen = ({ navigation }) => {
   const { height } = useWindowDimensions();
   const [email, setEmail] = useState("");
@@ -47,18 +48,19 @@ const LoginScreen = ({ navigation }) => {
   const goToRegister = () => {
     navigation.navigate("CreateAccount");
   };
-  
+
   const handleSignIn = () => {
     console.log("Sign in pressed");
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log("singed in");
+        console.log("signed in");
         const user = userCredential.user;
         console.log(user);
 
         // navigation.navigate("Home");
-
         // getUserDocument(userCredential.user.uid)
+        // console.log(`This is the user document: \n`);
+
       })
       .catch((error) => {
         console.log(error);
