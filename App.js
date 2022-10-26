@@ -7,7 +7,9 @@ import ContactScreen from "./screens/ContactScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
 import BookingScreen from "./screens/BookingScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import VaccineInfoScreen from "./screens/VaccineInfoScreen";
 import SearchPrefScreen from "./screens/SearchPrefScreen";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +47,11 @@ export default function App() {
           name="Profile"
           component={ProfileScreen}
         />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="VaccineInfo"
+          component={VaccineInfoScreen}
+          />
         <Stack.Screen
           options={{ headerShown: false }}
           name="SearchPref"

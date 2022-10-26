@@ -22,9 +22,13 @@ export function RequiredSteps() {
     navigation.navigate("Profile");
   };
 
+  const handleVaccinations = () => {
+    navigation.navigate("VaccineInfo");
+  };
+
   const requiredSteps = [
     { id: 1, name: "User profile", route: handleProfile },
-    { id: 2, name: "Vaccination details", route: handleProfile },
+    { id: 2, name: "Vaccination details", route: handleVaccinations },
     { id: 3, name: "Clinic search preferences", route: handleProfile },
     { id: 4, name: "Contact Information", route: handleContact },
   ];
