@@ -82,6 +82,10 @@ const HomeScreen = () => {
   const handleProfile = () => {
     navigation.navigate("Profile");
   };
+  
+  const handleEditProfile = () => {
+    navigation.navigate("EditProfile")
+  }
 
   const handleVaccinations = () => {
     navigation.navigate("VaccineInfo");
@@ -91,7 +95,7 @@ const HomeScreen = () => {
     navigation.navigate("SearchPref");
   };
 
-  const userProfileObj = { id: 1, name: "User profile", route: handleProfile }
+  const userProfileObj = { id: 1, name: "User profile", route: handleEditProfile }
   const vaccinationDetailsObj = { id: 2, name: "Vaccination details", route: handleVaccinations }
   const clinicSearchPrefObj = { id: 3, name: "Clinic search preferences", route: handleSearchPref }
 
@@ -118,6 +122,11 @@ const HomeScreen = () => {
           required.push(userProfileObj)
           required.push(vaccinationDetailsObj)
           required.push(clinicSearchPrefObj)
+          
+          // Only route to the Profile display if its completed
+          if(requiredSteps.userProfile){
+            userProfileObj.route = handleProfile
+          }
 
           checkFlag++
         })
