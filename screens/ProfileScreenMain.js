@@ -5,20 +5,15 @@ import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from "../firebase/firebase-config"
 import {View, StyleSheet, ScrollView} from 'react-native'
 import {
-    Avatar, 
-    Title,
-    Caption, 
     Text,
-    TouchableRipple,
     Card,
     Button,
     List,
-    Divider
+    Divider,
 } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { address } from "../firebase/database-models";
 import { useNavigation } from "@react-navigation/native";
+import  LoadingIndicator  from "../screen-functionality/LoadingIndicator"
 
 
 const ProfileScreenMain = () => {
@@ -26,12 +21,15 @@ const ProfileScreenMain = () => {
     const [userData, setUserData] = useState([])
     const [emergencyContactData, setEmergencyContactData] = useState([])
     const [addressData, setAddressData] = useState([])
+    const [loading, setLoading] = useState(false)
+
     const navigation = useNavigation();
     
     const app = initializeApp(firebaseConfig, "autovaxx");
     const auth = getAuth(app);
 
     useEffect( () => {
+        setLoading(true)
         getUserDocument(auth.currentUser.uid)
           .then( (fetchedUserData) => JSON.parse(fetchedUserData))
           .then( (fetchedUserData_json) => {
@@ -40,9 +38,12 @@ const ProfileScreenMain = () => {
             setAddressData(fetchedUserData_json.address)
           })
           .catch( (error) => console.log(`Could not get apt data: ER ${error}`))
+          .finally( () => setLoading(false) )
       }, [])
       
-
+    if (loading) {
+        return <LoadingIndicator></LoadingIndicator>      
+    }
     return ( 
         <SafeAreaView style={styles.container}>
         <ScrollView>

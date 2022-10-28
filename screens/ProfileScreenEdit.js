@@ -66,28 +66,27 @@ const ProfileScreenEdit = ({ navigation }) => {
     const userDocRef = doc(db, "users", auth.currentUser.uid);
 
     await updateDoc(userDocRef, {
-      "emergency contact": {
-        firstName: firstNameEC,
-        lastName: lastNameEC,
-        phone: phoneEC,
-        relationship: relationshipEC,
-      },
-      address: {
-        city: city,
-        country: country,
-        postalCode: zipCode,
-        streetName: streetName,
-        streetNumber: streetNumber,
-        unitNumber: unitNumber,
-      },
-      user_profile: {
-        firstName: firstName,
-        lastName: lastName,
-        gender: gender,
-        dateOfBirth: birthDate,
-        healthCard: healthCard,
-        phone: phoneNumber,
-      },
+      'user_profile.firstName': firstName,
+      'user_profile.lastName': lastName,
+      'user_profile.gender': gender,
+      'user_profile.dateOfBirth': birthDate,
+      'user_profile.phoneNumber': phoneNumber,
+      'user_profile.healthCard': healthCard,
+
+      'address.city': city,
+      'address.country': country,
+      'address.postalCode': zipCode,
+      'address.provinceState': province,
+      'address.streetName': streetName,
+      'address.streetNumber': streetNumber,
+      'address.unitNumber': unitNumber,
+
+      'emergency contact.firstName': firstNameEC,
+      'emergency contact.lastName': lastNameEC,
+      'emergency contact.phone': phoneEC,
+      'emergency contact.relationship': relationshipEC,
+      
+
     });
 
     navigation.navigate('Profile')
