@@ -1,22 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserDocument } from "../firebase/firebase-getUserData";
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from "../firebase/firebase-config"
-import {View, StyleSheet, ScrollView} from 'react-native'
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase/firebase-config";
+import { View, StyleSheet, ScrollView } from "react-native";
 import {
-    Text,
-    Card,
-    Button,
-    List,
-    Divider,
+  Avatar,
+  Title,
+  Caption,
+  Text,
+  TouchableRipple,
+  Card,
+  Button,
+  List,
+  Divider,
 } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from "@react-navigation/native";
 import  LoadingIndicator  from "../screen-functionality/LoadingIndicator"
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { address } from "../firebase/database-models";
 
 
 const ProfileScreenMain = () => {
+  const [userData, setUserData] = useState([]);
+  const [emergencyContactData, setEmergencyContactData] = useState([]);
+  const [addressData, setAddressData] = useState([]);
+
+  const app = initializeApp(firebaseConfig, "autovaxx");
+  const auth = getAuth(app);
+
+  useEffect(() => {
+    getUserDocument(auth.currentUser.uid)
+      .then((fetchedUserData) => JSON.parse(fetchedUserData))
+      .then((fetchedUserData_json) => {
+        setUserData(fetchedUserData_json["user_profile"]);
+        setEmergencyContactData(fetchedUserData_json["emergency contact"]);
+        setAddressData(fetchedUserData_json.address);
+      })
+      .catch((error) => console.log(`Could not get apt data: ER ${error}`));
+  }, []);
 
     const [userData, setUserData] = useState([])
     const [emergencyContactData, setEmergencyContactData] = useState([])
@@ -111,22 +134,23 @@ const ProfileScreenMain = () => {
     )
 }
 
+
 export default ProfileScreenMain;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-      },
-    cardWrap: {
-        width: '80%',
-        marginTop: '5%',
-        justifyContent:'center'
-    },
-    dividerTextStyle: {
-        marginTop: 5,
-        fontWeight: 'bold',
-        backgroundColor: 'Red',
-        fontSize: 20,
-        marginStart: 10
-    }
-  });
+  container: {
+    flex: 1,
+  },
+  cardWrap: {
+    width: "80%",
+    marginTop: "5%",
+    justifyContent: "center",
+  },
+  dividerTextStyle: {
+    marginTop: 5,
+    fontWeight: "bold",
+    backgroundColor: "Red",
+    fontSize: 20,
+    marginStart: 10,
+  },
+});

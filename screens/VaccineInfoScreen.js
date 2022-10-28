@@ -10,7 +10,12 @@ import {
   TextInput,
   Platform,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
+import { getUserDocument } from "../firebase/firebase-getUserData";
+import { updateUserDoc } from "../firebase/firebase-update-doc";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase/firebase-config";
 import Constants from "expo-constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import SelectList from "react-native-dropdown-select-list";
@@ -21,6 +26,7 @@ const VaccineInfoScreen = ({ navigation }) => {
 
   // State variables for form data
   const [modalVisible, setModalVisible] = useState(true);
+
   const [numVaccines, setNumVaccines] = useState(0);
 
   const [vaccine1Brand, setVaccine1Brand] = useState("");
@@ -39,19 +45,21 @@ const VaccineInfoScreen = ({ navigation }) => {
   const [datePicker2, setDatePicker2] = useState(false);
   const [datePicker3, setDatePicker3] = useState(false);
 
+  const app = initializeApp(firebaseConfig, "autovaxx");
+  const auth = getAuth(app);
+
+  useEffect(() => {
+    getUserDocument(auth.currentUser.uid)
+      .then((fetchedUserData) => JSON.parse(fetchedUserData))
+      .catch((e) => console.log(`Error fetching data: ${e}`));
+  }, []);
+
   const dropDownData = [
     { key: "0", value: "0" },
     { key: "1", value: "1" },
     { key: "2", value: "2" },
     { key: "3", value: "3" },
   ];
-
-  // const brands = [
-  //   { key: "0", value: "Pfizer" },
-  //   { key: "1", value: "Moderna" },
-  //   { key: "2", value: "Johnson" },
-  //   { key: "3", value: "Astra Zenica" },
-  // ];
 
   const brands = ["Pfizer", "Moderna", "Johnson", "Astra Zenica"];
 
@@ -71,16 +79,33 @@ const VaccineInfoScreen = ({ navigation }) => {
     setDatePicker3(!datePicker3);
   };
 
-  const displayData = () => {
-    console.log(vaccine1Brand);
-    console.log(vaccine1Date);
-    console.log(vaccine1Location);
-    console.log(vaccine2Brand);
-    console.log(vaccine2Date);
-    console.log(vaccine2Location);
-    console.log(vaccine3Brand);
-    console.log(vaccine3Date);
-    console.log(vaccine3Location);
+  const updateData = () => {
+    try {
+      updateUserDoc(auth.currentUser.uid, {
+        ["previous vaccines"]: {
+          vaccines: [
+            numVaccines > 0 && {
+              brand: vaccine1Brand,
+              dateOfVaccine: vaccine1Date.toLocaleDateString(),
+              location: vaccine1Location,
+            },
+            numVaccines > 1 && {
+              brand: vaccine2Brand,
+              dateOfVaccine: vaccine2Date.toLocaleTimeString(),
+              location: vaccine2Location,
+            },
+            numVaccines > 2 && {
+              brand: vaccine3Brand,
+              dateOfVaccine: vaccine3Date.toLocaleDateString(),
+              location: vaccine3Location,
+            },
+          ],
+        },
+      });
+      navigation.navigate("Home");
+    } catch (e) {
+      console.log(`Error updating db: ${e}`);
+    }
   };
 
   return (
@@ -328,7 +353,7 @@ const VaccineInfoScreen = ({ navigation }) => {
           </View>
         )}
 
-        <TouchableOpacity onPress={displayData} style={styles.submitButton}>
+        <TouchableOpacity onPress={updateData} style={styles.submitButton}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
 
@@ -370,7 +395,6 @@ const VaccineInfoScreen = ({ navigation }) => {
                 style={{ width: "30%", marginLeft: "5%" }}
                 onPress={() => {
                   setModalVisible(!modalVisible);
-                  console.log(numVaccines);
                 }}
               >
                 <Ionicons
