@@ -9,31 +9,25 @@ import {
 import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+import { getAuth } from "firebase/auth";
 import { getUserDocument } from "../firebase/firebase-getUserData";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from "../firebase/firebase-config"
 import {
-  Avatar, 
   Title,
-  Caption, 
-  TouchableRipple,
   Card,
   Button,
-  List,
-  Divider,
-  Paragraph,
   DataTable
 } from 'react-native-paper'
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import LoadingIndicator from "../screen-functionality/LoadingIndicator";
 
 
 export function Bookings() {
 
   // Keeps track of the appointment data
   const [aptData, setAptData] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
@@ -43,22 +37,16 @@ export function Bookings() {
       .then( (apt_data) => JSON.parse(apt_data))
       .then( (apt_data_json) => setAptData(apt_data_json.appointment))
       .catch( (error) => console.log('Could not get apt data'))
+      .finally( () => setLoading(false) )
   }, [])
+
+  if (loading) {
+    return <LoadingIndicator></LoadingIndicator>      
+}
   
   return aptData.map((aptData, i) => {
     return (
       <View key={i}>
-        {/* <View style={styles.innerBookingContainer}>
-          <Text style={styles.booking}>{aptData.pharmacy}</Text>
-          <Text>{aptData.pharmacy_address}</Text>
-          <Text>{aptData.date}</Text>
-          <Text>{aptData.time}</Text>
-          <Text>{aptData.vaccine}</Text>
-        </View>
-        <View style={styles.bookNowBtnContainer}>
-          <Text style={styles.bookNowBtn}>{aptData.booked ? 'Booked' : 'Waitlisted'}</Text>
-        </View> */}
-
         <Card>
           <Card.Content>
             <Title>{aptData.pharmacy}</Title>
