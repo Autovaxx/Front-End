@@ -1,7 +1,5 @@
 // TODO
 // --> UPDATE FLAGS
-// --> FIX UPDATE BUG
-// --> CURRENTLY ERASING FIELDS NOT BEING UPDATED
 
 import {
   StyleSheet,
@@ -14,7 +12,7 @@ import {
 import React from "react";
 import Constants from "expo-constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { TextInput, Divider, Button } from "react-native-paper";
+import { TextInput, Divider, Button, RadioButton } from "react-native-paper";
 import {
   getFirestore,
   collection,
@@ -24,6 +22,7 @@ import {
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
+import RNDateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 const ProfileScreenEdit = ({ navigation }) => {
   const StatusBarHeight = Constants.StatusBarHeight;
@@ -37,9 +36,10 @@ const ProfileScreenEdit = ({ navigation }) => {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [gender, setGender] = React.useState("");
-  const [birthDate, setBirthDate] = React.useState("");
+  const [birthDate, setBirthDate] = React.useState( new Date());
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [healthCard, setHealthcard] = React.useState("");
+  const [showDatePicker, setShowDatePicker] = React.useState(false);
 
   // Location Details State
   const [country, setCountry] = React.useState("");
@@ -66,30 +66,28 @@ const ProfileScreenEdit = ({ navigation }) => {
     const userDocRef = doc(db, "users", auth.currentUser.uid);
 
     await updateDoc(userDocRef, {
-      'user_profile.firstName': firstName,
-      'user_profile.lastName': lastName,
-      'user_profile.gender': gender,
-      'user_profile.dateOfBirth': birthDate,
-      'user_profile.phoneNumber': phoneNumber,
-      'user_profile.healthCard': healthCard,
+      "user_profile.firstName": firstName,
+      "user_profile.lastName": lastName,
+      "user_profile.gender": gender,
+      "user_profile.dateOfBirth": birthDate,
+      "user_profile.phoneNumber": phoneNumber,
+      "user_profile.healthCard": healthCard,
 
-      'address.city': city,
-      'address.country': country,
-      'address.postalCode': zipCode,
-      'address.provinceState': province,
-      'address.streetName': streetName,
-      'address.streetNumber': streetNumber,
-      'address.unitNumber': unitNumber,
+      "address.city": city,
+      "address.country": country,
+      "address.postalCode": zipCode,
+      "address.provinceState": province,
+      "address.streetName": streetName,
+      "address.streetNumber": streetNumber,
+      "address.unitNumber": unitNumber,
 
-      'emergency contact.firstName': firstNameEC,
-      'emergency contact.lastName': lastNameEC,
-      'emergency contact.phone': phoneEC,
-      'emergency contact.relationship': relationshipEC,
-      
-
+      "emergency contact.firstName": firstNameEC,
+      "emergency contact.lastName": lastNameEC,
+      "emergency contact.phone": phoneEC,
+      "emergency contact.relationship": relationshipEC,
     });
 
-    navigation.navigate('Profile')
+    navigation.navigate("Profile");
   };
 
   return (
@@ -154,6 +152,27 @@ const ProfileScreenEdit = ({ navigation }) => {
               setHealthcard(text);
             }}
           />
+          {/* Style this after */}
+          {/* <Text>Gender</Text>
+          <RadioButton.Group
+            onValueChange={(newValue) => setGender(newValue)}
+            value={gender}
+          >
+            <View style={{flexDirection: "row"}}>
+              <Text>Male</Text>
+              <RadioButton value="Male" />
+              <Text>Female</Text>
+              <RadioButton value="Female" />
+            </View>
+          </RadioButton.Group>
+            
+          <Text>Select your birth date:</Text>
+          <RNDateTimePicker 
+          mode='date'
+          value={new Date(2022, 10, 1)}
+          onChange={ (event, value) => {
+            console.log(value)
+          }}/> */}
         </View>
 
         <View style={{ marginBottom: 20 }}>

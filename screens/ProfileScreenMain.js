@@ -26,9 +26,12 @@ const ProfileScreenMain = () => {
   const [userData, setUserData] = useState([]);
   const [emergencyContactData, setEmergencyContactData] = useState([]);
   const [addressData, setAddressData] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     getUserDocument(auth.currentUser.uid)
@@ -40,16 +43,6 @@ const ProfileScreenMain = () => {
       })
       .catch((error) => console.log(`Could not get apt data: ER ${error}`));
   }, []);
-
-    const [userData, setUserData] = useState([])
-    const [emergencyContactData, setEmergencyContactData] = useState([])
-    const [addressData, setAddressData] = useState([])
-    const [loading, setLoading] = useState(false)
-
-    const navigation = useNavigation();
-    
-    const app = initializeApp(firebaseConfig, "autovaxx");
-    const auth = getAuth(app);
 
     useEffect( () => {
         setLoading(true)
