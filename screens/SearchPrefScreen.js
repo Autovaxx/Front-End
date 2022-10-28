@@ -17,7 +17,7 @@ const SearchPrefScreen = () => {
   const navigation = useNavigation();
   const pharmacies = ["Shoppers", "Rexall", "Metro"];
   const vaccinationPrefs = [
-    "Astrazeneca",
+    "AstraZenca",
     "Pfizer",
     "Moderna",
     "Johnson & Johnson",
@@ -50,13 +50,29 @@ const SearchPrefScreen = () => {
         </View>
         <View style={styles.innerDateContainer}>
           <Text style={styles.datetitle}>Start Date:</Text>
-          <CustomDatePicker />
+          <View style={styles.innerDateContainerSub}>
+            <CustomDatePicker />
+            <Ionicons
+              name="calendar"
+              size={34}
+              color="#2699FB"
+              style={styles.calendarIcon}
+            />
+          </View>
         </View>
         <View style={styles.innerDateContainer}>
           <Text style={styles.datetitle}>End Date:</Text>
-          <CustomDatePicker />
+          <View style={styles.innerDateContainerSub}>
+            <CustomDatePicker />
+            <Ionicons
+              name="calendar"
+              size={34}
+              color="#2699FB"
+              style={styles.calendarIcon}
+            />
+          </View>
         </View>
-        <View style={styles.innerDateContainer}>
+        <View style={styles.innerTitleContainer}>
           <Text style={styles.subtitle}>Pharmacy</Text>
         </View>
         <View>
@@ -80,7 +96,7 @@ const SearchPrefScreen = () => {
             }}
           />
         </View>
-        <View style={styles.innerDateContainer}>
+        <View style={styles.innerTitleContainer}>
           <Text style={styles.subtitle}>Vaccinaiton Preference</Text>
         </View>
         <View>
@@ -139,9 +155,26 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   innerDateContainer: {
+    marginTop: "3%",
     flexDirection: "row",
     width: "100%",
-    justifyContent: "center",
+    alignItems: "center",
+  },
+  innerDateContainerSub: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "52%",
+    marginLeft: "-3%",
+    borderColor: "#FB2876",
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  innerInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#FB2876",
+    borderWidth: 1,
+    borderRadius: 8,
   },
   title: {
     fontSize: 25,
@@ -162,6 +195,10 @@ const styles = StyleSheet.create({
   },
   subtitleText: {
     padding: "3%",
+  },
+  calendarIcon: {
+    marginLeft: "-4%",
+    marginBottom: "3%",
   },
   buttonContainer: {
     width: "80%",

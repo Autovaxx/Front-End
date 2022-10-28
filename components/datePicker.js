@@ -89,7 +89,7 @@ export default CustomDatePicker;
 
 const styles = StyleSheet.create({
   container: {
-    width: "50%",
+    width: "80%",
     padding: "5%",
     fontSize: 12,
   },
