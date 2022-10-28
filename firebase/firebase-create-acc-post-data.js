@@ -20,5 +20,6 @@ export const createUserCollection = async (userCred, emailAddress) => {
     "previous vaccines": dbModels.previous_vaccine,
     user_profile: dbModels.user_profile,
     required_steps: dbModels.required_steps,
+    search_preferences: dbModels.search_preference,
   });
 };
