@@ -127,8 +127,7 @@ const SearchPrefScreen = () => {
           <SelectList
             setSelected={setPharmacy}
             data={pharmacies}
-            //placeholder={`${pharmacy}`}
-            defaultOption={pharmacy}
+            placeholder={pharmacy}
             search={false}
             arrowicon={<Ionicons name="arrow-down" size={24} color="#2699FB" />}
             inputStyles={{ marginBottom: "1.5%" }}
@@ -152,7 +151,7 @@ const SearchPrefScreen = () => {
           <SelectList
             setSelected={setVaccinationPref}
             data={vaccinationPrefs}
-            placeholder="Vaccination Preferences"
+            placeholder={vaccinationPref}
             search={false}
             arrowicon={<Ionicons name="arrow-down" size={24} color="#2699FB" />}
             inputStyles={{ marginBottom: "1.5%" }}
