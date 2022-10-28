@@ -8,43 +8,26 @@ import {
   BackHandler
 } from "react-native";
 import { Button } from 'react-native-paper'
-import React, {Component, useEffect} from "react";
+import React, { Component, useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
-import {useRoute, useFocusEffect} from '@react-navigation/native';
+import { getUserDocument } from "../firebase/firebase-getUserData";
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { getAuth, signOut } from "firebase/auth";
 
-export function RequiredSteps() {
-  const navigation = useNavigation();
+const required = [];
+let checkFlag = 1
 
-  const handleContact = () => {
-    console.log("Contact Information page");
-    navigation.navigate("Contact");
-  };
-  const handleProfile = () => {
-    navigation.navigate("Profile");
-  };
+export function RequiredStepsView() {
 
-  const handleVaccinations = () => {
-    navigation.navigate("VaccineInfo");
-  };
-
-  const requiredSteps = [
-    { id: 1, name: "User profile", route: handleProfile },
-    { id: 2, name: "Vaccination details", route: handleVaccinations },
-    { id: 3, name: "Clinic search preferences", route: handleProfile },
-    { id: 4, name: "Contact Information", route: handleContact },
-  ];
-
-  return requiredSteps.map((step, i) => {
+  return required.map((step, i) => {
     return (
       <TouchableOpacity key={i} onPress={step.route}>
         <View style={styles.stepsContainer}>
-          <Ionicons name="close-circle" size={25} color="#ff0000" />
-          {/*<Ionicons name="checkmark-circle" size={25} color="#2fea6e" />*/}
+          {step.flag ?  <Ionicons name="checkmark-circle" size={25} color="#2fea6e" /> : <Ionicons name="close-circle" size={25} color="#ff0000" />} 
           <View style={styles.innerStepsContainer}>
             <Text style={styles.steps}>{step.name}</Text>
             <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
@@ -95,13 +78,59 @@ const HomeScreen = () => {
   const navigation = useNavigation()
   const route = useRoute()
 
+
+  const handleProfile = () => {
+    navigation.navigate("Profile");
+  };
+
+  const handleVaccinations = () => {
+    navigation.navigate("VaccineInfo");
+  };
+  const handleSearchPref = () => {
+    console.log("Search Preferences page");
+    navigation.navigate("SearchPref");
+  };
+
+  const userProfileObj = { id: 1, name: "User profile", route: handleProfile }
+  const vaccinationDetailsObj = { id: 2, name: "Vaccination details", route: handleVaccinations }
+  const clinicSearchPrefObj = { id: 3, name: "Clinic search preferences", route: handleSearchPref }
+
+  const [requiredSteps, setRequiredSteps] = useState("")
+
+  useEffect(() => {
+
+    if (checkFlag <= 1) {
+
+      getUserDocument(auth.currentUser.uid)
+        .then((data) => JSON.parse(data))
+        .then((data_json) => {
+          setRequiredSteps(data_json['required_steps'])
+        })
+        .catch((error) => { console.log(`Error: ${error}`) })
+        .finally(() => {
+
+          console.log(requiredSteps)
+
+          userProfileObj.flag = requiredSteps.userProfile
+          vaccinationDetailsObj.flag = requiredSteps.vaccinationDetails
+          clinicSearchPrefObj.flag = requiredSteps.searchPreferences
+
+          required.push(userProfileObj)
+          required.push(vaccinationDetailsObj)
+          required.push(clinicSearchPrefObj)
+
+          checkFlag++
+        })
+    }
+  })
+
   // Disabling the devices built-in back button for the current home page 
   useFocusEffect(
-    React.useCallback( () =>{
+    React.useCallback(() => {
       const onBackPress = () => {
-        if (route.name === 'Home'){
+        if (route.name === 'Home') {
           return true;
-        }else {
+        } else {
           return false;
         }
       }
@@ -116,7 +145,7 @@ const HomeScreen = () => {
   const handleSignOut = () => {
     auth
       .signOut()
-      .then( () => {
+      .then(() => {
         navigation.replace("Login")
       })
   }
@@ -146,30 +175,33 @@ const HomeScreen = () => {
             Here's what you need to do to set up your account.
           </Text>
         </View>
-        <RequiredSteps></RequiredSteps>
+        <RequiredStepsView></RequiredStepsView>
         <View style={styles.innerContainer}>
           <Text style={[styles.subtitle, { paddingTop: 30 }]}>
-            What would you like to do?
+            Completed
           </Text>
+        </View>
+        <View style={styles.innerContainer}>
+          <Text style={[styles.subtitle, { paddingTop: 30 }]}> What would you like to do? </Text>
         </View>
         <View style={styles.parentBtnContainer}>
           <OptionButtons></OptionButtons>
         </View>
 
       </KeyboardAvoidingView>
-      <View style={{ 
+      <View style={{
         marginTop: 25,
-              }}>
-      <Button
-            icon="account-edit-outline"
-            mode="text"
-            textColor="black"
-            onPress={(handleSignOut)}>
-                Sign Out
-      </Button>
+      }}>
+        <Button
+          icon="account-edit-outline"
+          mode="text"
+          textColor="black"
+          onPress={(handleSignOut)}>
+          Sign Out
+        </Button>
       </View>
     </ScrollView>
-    
+
   );
 };
 
