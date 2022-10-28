@@ -1,3 +1,8 @@
+import { getUserDocument } from "../firebase/firebase-getUserData";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase/firebase-config";
+import { getAuth } from "firebase/auth";
+import { updateUserDoc } from "../firebase/firebase-update-doc";
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -6,7 +11,7 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
@@ -14,6 +19,9 @@ import CustomDatePicker from "../components/datePicker";
 import SelectList from "react-native-dropdown-select-list";
 
 const SearchPrefScreen = () => {
+  const app = initializeApp(firebaseConfig, "autovaxx");
+  const auth = getAuth(app);
+
   const navigation = useNavigation();
   const pharmacies = ["Shoppers", "Rexall", "Metro"];
   const vaccinationPrefs = [
@@ -25,12 +33,47 @@ const SearchPrefScreen = () => {
 
   const [pharmacy, setPharmacy] = useState("");
   const [vaccinationPref, setVaccinationPref] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const handleHome = () => {
     console.log("View Home page");
     navigation.navigate("Home");
   };
   const StatusBarHeight = Constants.StatusBarHeight;
+
+  useEffect(() => {
+    getUserDocument(auth.currentUser.uid)
+      .then((fetchedUserData) => JSON.parse(fetchedUserData))
+      .then((fetchedUserData_json) => {
+        setPharmacy(fetchedUserData_json["search_preference"]["pharmacy"]);
+        setVaccinationPref(
+          fetchedUserData_json["search_preference"]["vaccinationPref"]
+        );
+        setEndDate(fetchedUserData_json["search_preference"]["endDate"]);
+        setStartDate(fetchedUserData_json["search_preference"]["startDate"]);
+      })
+      .catch((error) => console.log(`Could not get apt data: ER ${error}`));
+  }, []);
+
+  const updateData = () => {
+    try {
+      updateUserDoc(auth.currentUser.uid, {
+        search_preference: {
+          pharmacy: pharmacy,
+          vaccinationPref: vaccinationPref,
+          startDate: startDate.toLocaleDateString(),
+          endDate: endDate.toLocaleDateString(),
+        },
+      });
+      console.log("updateData function called.");
+      console.log("start Date: " + startDate);
+      console.log("end Date: " + endDate);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ScrollView>
       <KeyboardAvoidingView
@@ -51,7 +94,7 @@ const SearchPrefScreen = () => {
         <View style={styles.innerDateContainer}>
           <Text style={styles.datetitle}>Start Date:</Text>
           <View style={styles.innerDateContainerSub}>
-            <CustomDatePicker />
+            <CustomDatePicker update={setStartDate} value={startDate} />
             <Ionicons
               name="calendar"
               size={34}
@@ -63,7 +106,7 @@ const SearchPrefScreen = () => {
         <View style={styles.innerDateContainer}>
           <Text style={styles.datetitle}>End Date:</Text>
           <View style={styles.innerDateContainerSub}>
-            <CustomDatePicker />
+            <CustomDatePicker update={setEndDate} value={endDate} />
             <Ionicons
               name="calendar"
               size={34}
@@ -84,7 +127,8 @@ const SearchPrefScreen = () => {
           <SelectList
             setSelected={setPharmacy}
             data={pharmacies}
-            placeholder="Pharmacy"
+            //placeholder={`${pharmacy}`}
+            defaultOption={pharmacy}
             search={false}
             arrowicon={<Ionicons name="arrow-down" size={24} color="#2699FB" />}
             inputStyles={{ marginBottom: "1.5%" }}
@@ -126,7 +170,7 @@ const SearchPrefScreen = () => {
             { width: "50%", alignSelf: "center", marginTop: "15%" },
           ]}
         >
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={updateData}>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
         </View>

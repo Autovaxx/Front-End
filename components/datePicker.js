@@ -7,21 +7,19 @@ import {
   Platform,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import moment from "moment";
 
 const CustomDatePicker = (props) => {
-  const [date, setDate] = useState(moment());
   const [display, setDisplay] = useState(false);
 
   const onIOSChange = (e, selectedDate) => {
     setDisplay(false);
-    setDate(moment(selectedDate));
+    props.update(selectedDate);
   };
 
   const onAndroidChange = (e, selectedDate) => {
     setDisplay(false);
-    setDate(moment(selectedDate));
     props.onDateChange(selectedDate);
+    props.update(selectedDate);
   };
 
   const renderAndroidDatePicker = () => {
@@ -29,13 +27,9 @@ const CustomDatePicker = (props) => {
       <View>
         {display ? (
           <DateTimePicker
-            timeZoneOffsetInMinutes={0}
-            value={new Date(date)}
+            value={new Date(props.value)}
             mode="date"
-            minimumDate={new Date(moment().format("YYYY-MM-DD"))}
-            maximumDate={
-              new Date(moment().add(10, "years").format("YYYY-MM-DD"))
-            }
+            minimumDate={new Date()}
             onChange={onAndroidChange}
           />
         ) : null}
@@ -47,11 +41,9 @@ const CustomDatePicker = (props) => {
     return (
       <View>
         <DateTimePicker
-          timeZoneOffsetInMinutes={0}
-          value={new Date(date)}
+          value={new Date(props.value)}
           mode="date"
-          minimumDate={new Date(moment().format("YYYY-MM-DD"))}
-          maximumDate={new Date(moment().add(10, "years").format("YYYY-MM-DD"))}
+          minimumDate={new Date()}
           onChange={onIOSChange}
         />
       </View>
@@ -72,9 +64,10 @@ const CustomDatePicker = (props) => {
           style={styles.androidDate}
           onPress={() => setDisplay(true)}
         >
-          <Text style={styles.androidDateText}>
-            {moment(date).format("MMM DD, YYYY")}
-          </Text>
+          <Text
+            style={styles.androidDateText}
+            value={date.toLocaleDateString()}
+          />
         </TouchableOpacity>
       )}
       {Platform.OS === "ios"
