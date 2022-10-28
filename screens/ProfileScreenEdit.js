@@ -1,70 +1,261 @@
+// TODO
+// --> UPDATE FLAGS
+// --> FIX UPDATE BUG
+// --> CURRENTLY ERASING FIELDS NOT BEING UPDATED
+
 import {
   StyleSheet,
   Text,
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  TextInput,
   ScrollView,
 } from "react-native";
 import React from "react";
 import Constants from "expo-constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-export function ProfileDetails() {
-  const profileDetails = [
-    { id: 1, name: "First Name" },
-    { id: 2, name: "Last Name" },
-    { id: 3, name: "Gender" },
-    { id: 4, name: "Birthdate" },
-    { id: 5, name: "Country" },
-    { id: 6, name: "Province" },
-    { id: 7, name: "City" },
-    { id: 8, name: "ZIP Code" },
-    { id: 9, name: "Street Name" },
-    { id: 10, name: "Street Num." },
-    { id: 11, name: "Unit Num." },
-  ];
-
-  return profileDetails.map((label, i) => {
-    return (
-      <View key={i} style={styles.innerContainer}>
-        <Text style={styles.text}>{label.name}</Text>
-        <TextInput autoCorrect={false} style={styles.textInput} />
-      </View>
-    );
-  });
-}
+import { TextInput, Divider, Button } from "react-native-paper";
+import {
+  getFirestore,
+  collection,
+  updateDoc,
+  doc,
+} from "@firebase/firestore/lite";
+import { getAuth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase/firebase-config";
 
 const ProfileScreenEdit = ({ navigation }) => {
   const StatusBarHeight = Constants.StatusBarHeight;
 
+  // Database imports
+  const app = initializeApp(firebaseConfig, "autovaxx");
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // User Details State
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [gender, setGender] = React.useState("");
+  const [birthDate, setBirthDate] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [healthCard, setHealthcard] = React.useState("");
+
+  // Location Details State
+  const [country, setCountry] = React.useState("");
+  const [province, setProvince] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [zipCode, setZipCode] = React.useState("");
+  const [streetName, setStreetName] = React.useState("");
+  const [streetNumber, setStreetNumber] = React.useState("");
+  const [unitNumber, setUnitNumber] = React.useState("");
+
+  // Emergency Contact State
+  const [firstNameEC, setFirstNameEC] = React.useState("");
+  const [lastNameEC, setLastNameEC] = React.useState("");
+  const [phoneEC, setPhoneEC] = React.useState("");
+  const [relationshipEC, setRelationshipEC] = React.useState("");
+
   const handleHome = () => {
     navigation.navigate("Home");
+  };
+
+  const handlePostData = async () => {
+    console.log(auth.currentUser.uid);
+
+    const userDocRef = doc(db, "users", auth.currentUser.uid);
+
+    await updateDoc(userDocRef, {
+      "emergency contact": {
+        firstName: firstNameEC,
+        lastName: lastNameEC,
+        phone: phoneEC,
+        relationship: relationshipEC,
+      },
+      address: {
+        city: city,
+        country: country,
+        postalCode: zipCode,
+        streetName: streetName,
+        streetNumber: streetNumber,
+        unitNumber: unitNumber,
+      },
+      user_profile: {
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender,
+        dateOfBirth: birthDate,
+        healthCard: healthCard,
+        phone: phoneNumber,
+      },
+    });
+
+    navigation.navigate('Profile')
   };
 
   return (
     <ScrollView>
       <KeyboardAvoidingView
         style={[styles.container, { marginTop: StatusBarHeight }]}
-        behavior="padding"
       >
         <TouchableOpacity onPress={handleHome}>
           <Ionicons name="arrow-back" size={25} color="#fb3a6a" />
         </TouchableOpacity>
+
         <View style={styles.innerContainer}>
           <View style={[styles.innerTitleContainer, { marginTop: "1%" }]}>
             <Text style={styles.title}>User Profile</Text>
           </View>
         </View>
-        <ProfileDetails></ProfileDetails>
-        <View style={styles.innerContainer}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={() => {}} style={styles.button}>
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
-          </View>
+
+        <View style={{ marginBottom: 20 }}>
+          <Text style={styles.dividerTextStyle}>User Details</Text>
+          <Divider style={{ marginBottom: 2 }} />
+
+          {/* Profile Information Inputs */}
+          <TextInput
+            label={"First Name"}
+            value={firstName}
+            onChangeText={(text) => {
+              setFirstName(text);
+            }}
+          />
+          <TextInput
+            label={"Last Name"}
+            value={lastName}
+            onChangeText={(text) => {
+              setLastName(text);
+            }}
+          />
+          <TextInput
+            label={"Gender"}
+            value={gender}
+            onChangeText={(text) => {
+              setGender(text);
+            }}
+          />
+          <TextInput
+            label={"Birth Date"}
+            value={birthDate}
+            onChangeText={(text) => {
+              setBirthDate(text);
+            }}
+          />
+          <TextInput
+            label={"Phone Number"}
+            value={phoneNumber}
+            onChangeText={(text) => {
+              setPhoneNumber(text);
+            }}
+          />
+          <TextInput
+            label={"Health Card"}
+            value={healthCard}
+            onChangeText={(text) => {
+              setHealthcard(text);
+            }}
+          />
         </View>
+
+        <View style={{ marginBottom: 20 }}>
+          <Text style={styles.dividerTextStyle}>Location</Text>
+          <Divider style={{ marginBottom: 2 }} />
+
+          {/* Location Information Inputs */}
+          <TextInput
+            label={"Country"}
+            value={country}
+            onChangeText={(text) => {
+              setCountry(text);
+            }}
+          />
+          <TextInput
+            label={"Province"}
+            value={province}
+            onChangeText={(text) => {
+              setProvince(text);
+            }}
+          />
+          <TextInput
+            label={"City"}
+            value={city}
+            onChangeText={(text) => {
+              setCity(text);
+            }}
+          />
+          <TextInput
+            label={"Zip Code"}
+            value={zipCode}
+            onChangeText={(text) => {
+              setZipCode(text);
+            }}
+          />
+          <TextInput
+            label={"Street Name"}
+            value={streetName}
+            onChangeText={(text) => {
+              setStreetName(text);
+            }}
+          />
+          <TextInput
+            label={"Street Number"}
+            value={streetNumber}
+            onChangeText={(text) => {
+              setStreetNumber(text);
+            }}
+          />
+          <TextInput
+            label={"Unit Number"}
+            value={unitNumber}
+            onChangeText={(text) => {
+              setUnitNumber(text);
+            }}
+          />
+        </View>
+        <View style={{ marginBottom: 15 }}>
+          <Text style={styles.dividerTextStyle}>Emergency Contact</Text>
+          <Divider style={{ marginBottom: 2 }} />
+
+          {/* Emergency Contact Inputs */}
+          <TextInput
+            label={"First Name"}
+            value={firstNameEC}
+            onChangeText={(text) => {
+              setFirstNameEC(text);
+            }}
+          />
+          <TextInput
+            label={"Last Name"}
+            value={lastNameEC}
+            onChangeText={(text) => {
+              setLastNameEC(text);
+            }}
+          />
+
+          <TextInput
+            label={"Phone Number"}
+            value={phoneEC}
+            onChangeText={(text) => {
+              setPhoneEC(text);
+            }}
+          />
+          <TextInput
+            label={"Relationship"}
+            value={relationshipEC}
+            onChangeText={(text) => {
+              setRelationshipEC(text);
+            }}
+          />
+        </View>
+
+        <Button
+          icon="account-edit-outline"
+          mode="text"
+          textColor="#0000FF"
+          onPress={handlePostData}
+        >
+          Submit
+        </Button>
       </KeyboardAvoidingView>
     </ScrollView>
   );
@@ -130,5 +321,15 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 16,
+  },
+  dividerTextStyle: {
+    marginTop: 5,
+    fontWeight: "bold",
+    fontSize: 20,
+    width: "100%",
+    backgroundColor: "#007FFF",
+    padding: 5,
+    borderRadius: 2,
+    color: "white",
   },
 });

@@ -18,6 +18,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { address } from "../firebase/database-models";
+import { useNavigation } from "@react-navigation/native";
 
 
 const ProfileScreenMain = () => {
@@ -25,6 +26,7 @@ const ProfileScreenMain = () => {
     const [userData, setUserData] = useState([])
     const [emergencyContactData, setEmergencyContactData] = useState([])
     const [addressData, setAddressData] = useState([])
+    const navigation = useNavigation();
     
     const app = initializeApp(firebaseConfig, "autovaxx");
     const auth = getAuth(app);
@@ -39,6 +41,7 @@ const ProfileScreenMain = () => {
           })
           .catch( (error) => console.log(`Could not get apt data: ER ${error}`))
       }, [])
+      
 
     return ( 
         <SafeAreaView style={styles.container}>
@@ -97,7 +100,10 @@ const ProfileScreenMain = () => {
         <Button
             icon="account-edit-outline"
             mode="text"
-            textColor="red">
+            textColor="#0000FF"
+            onPress={ () => {
+                navigation.navigate("EditProfile")
+            }}>
                 Edit Profile
         </Button>
         </SafeAreaView>
