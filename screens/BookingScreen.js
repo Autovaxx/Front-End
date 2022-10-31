@@ -12,58 +12,48 @@ import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
 import { getUserDocument } from "../firebase/firebase-getUserData";
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from "../firebase/firebase-config"
-import {
-  Title,
-  Card,
-  Button,
-  DataTable
-} from 'react-native-paper'
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase/firebase-config";
+import { Title, Card, Button, DataTable } from "react-native-paper";
 import LoadingIndicator from "../screen-functionality/LoadingIndicator";
 
-
 export function Bookings() {
-
   // Keeps track of the appointment data
-  const [aptData, setAptData] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [aptData, setAptData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
 
-  useEffect( () => {
+  useEffect(() => {
     getUserDocument(auth.currentUser.uid)
-      .then( (apt_data) => JSON.parse(apt_data))
-      .then( (apt_data_json) => setAptData(apt_data_json.appointment))
-      .catch( (error) => console.log('Could not get apt data'))
-      .finally( () => setLoading(false) )
-  }, [])
+      .then((apt_data) => JSON.parse(apt_data))
+      .then((apt_data_json) => setAptData(apt_data_json.appointment))
+      .catch((error) => console.log("Could not get apt data"))
+      .finally(() => setLoading(false));
+  }, []);
 
   if (loading) {
-    return <LoadingIndicator></LoadingIndicator>      
-}
-  
+    return <LoadingIndicator></LoadingIndicator>;
+  }
+
   return aptData.map((aptData, i) => {
     return (
       <View key={i}>
         <Card>
           <Card.Content>
             <Title>{aptData.pharmacy}</Title>
-              <DataTable>
-                <DataTable.Row>
-                  <DataTable.Cell>{aptData.pharmacy_address}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                  <DataTable.Cell>{aptData.vaccine}</DataTable.Cell>
-                  <DataTable.Cell>{aptData.date}</DataTable.Cell>
-                  <DataTable.Cell>{aptData.time}</DataTable.Cell>
-                </DataTable.Row>
-              </DataTable>
-              <Button>
-                {aptData.booked ? 'Booked' : 'Waitlisted'}
-              </Button>
-              
+            <DataTable>
+              <DataTable.Row>
+                <DataTable.Cell>{aptData.pharmacy_address}</DataTable.Cell>
+              </DataTable.Row>
+              <DataTable.Row>
+                <DataTable.Cell>{aptData.vaccine}</DataTable.Cell>
+                <DataTable.Cell>{aptData.date}</DataTable.Cell>
+                <DataTable.Cell>{aptData.time}</DataTable.Cell>
+              </DataTable.Row>
+            </DataTable>
+            <Button>{aptData.booked ? "Booked" : "Waitlisted"}</Button>
           </Card.Content>
         </Card>
       </View>
@@ -72,7 +62,6 @@ export function Bookings() {
 }
 
 const BookingScreen = () => {
-
   const navigation = useNavigation();
   const handleHome = () => {
     console.log("View Home page");
@@ -99,7 +88,6 @@ const BookingScreen = () => {
       <ScrollView>
         <Bookings></Bookings>
       </ScrollView>
-
     </KeyboardAvoidingView>
   );
 };
@@ -170,13 +158,12 @@ const styles = StyleSheet.create({
   },
 });
 
-
 // Used to store our appointments
 // let appointments = []
 
 // getUserDocument(auth.currentUser.uid).then( (user_data) => {
 //   appointments = JSON.parse(user_data)
-  
+
 //   appointments.appointment.forEach( (apt) => {
 //     bookings.push({
 //       id: 2,

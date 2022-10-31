@@ -22,7 +22,9 @@ import {
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
-import RNDateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import RNDateTimePicker, {
+  DateTimePickerAndroid,
+} from "@react-native-community/datetimepicker";
 
 const ProfileScreenEdit = ({ navigation }) => {
   const StatusBarHeight = Constants.StatusBarHeight;
@@ -36,7 +38,7 @@ const ProfileScreenEdit = ({ navigation }) => {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [gender, setGender] = React.useState("");
-  const [birthDate, setBirthDate] = React.useState( new Date());
+  const [birthDate, setBirthDate] = React.useState(new Date());
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [healthCard, setHealthcard] = React.useState("");
   const [showDatePicker, setShowDatePicker] = React.useState(false);

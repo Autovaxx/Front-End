@@ -12,7 +12,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getApp } from "firebase/app";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState } from "react";
-import {createUserCollection} from '../firebase/firebase-create-acc-post-data'
+import { createUserCollection } from "../firebase/firebase-create-acc-post-data";
 
 const CreateAccountScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -49,7 +49,7 @@ const CreateAccountScreen = ({ navigation }) => {
         console.log("Account created");
         const user = userCredential.user;
         console.log(user);
-        createUserCollection(userCredential.user.uid, email)
+        createUserCollection(userCredential.user.uid, email);
         navigation.navigate("Home");
       })
       .catch((error) => {
