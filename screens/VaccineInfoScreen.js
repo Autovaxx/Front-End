@@ -91,7 +91,7 @@ const VaccineInfoScreen = ({ navigation }) => {
             },
             numVaccines > 1 && {
               brand: vaccine2Brand,
-              dateOfVaccine: vaccine2Date.toLocaleTimeString(),
+              dateOfVaccine: vaccine2Date.toLocaleDateString(),
               location: vaccine2Location,
             },
             numVaccines > 2 && {
@@ -101,6 +101,9 @@ const VaccineInfoScreen = ({ navigation }) => {
             },
           ],
         },
+      });
+      updateUserDoc(auth.currentUser.uid, {
+        vaccinationDetails: true,
       });
       navigation.navigate("Home");
     } catch (e) {
@@ -253,7 +256,7 @@ const VaccineInfoScreen = ({ navigation }) => {
 
             {datePicker2 && (
               <DateTimePicker
-                value={vaccine1Date}
+                value={vaccine2Date}
                 mode={"date"}
                 display={Platform.OS === "ios" ? "spinner" : "default"}
                 is24Hour={true}
