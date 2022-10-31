@@ -14,15 +14,13 @@ import {
 import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
-import { useNavigation } from "@react-navigation/native";
 import CustomDatePicker from "../components/datePicker";
 import SelectList from "react-native-dropdown-select-list";
 
-const SearchPrefScreen = () => {
+const SearchPrefScreen = ({ navigation }) => {
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
 
-  const navigation = useNavigation();
   const pharmacies = ["Shoppers", "Rexall", "Metro"];
   const vaccinationPrefs = [
     "AstraZenca",
@@ -66,9 +64,12 @@ const SearchPrefScreen = () => {
           endDate: endDate.toLocaleDateString(),
         },
       });
-      console.log("updateData function called.");
-      console.log("start Date: " + startDate);
-      console.log("end Date: " + endDate);
+      updateUserDoc(auth.currentUser.uid, {
+        required_steps: {
+          searchPreferences: true,
+        },
+      });
+      navigation.navigate("Home");
     } catch (error) {
       console.log(error);
     }

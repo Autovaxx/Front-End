@@ -112,7 +112,7 @@ const HomeScreen = () => {
     route: handleSearchPref,
   };
 
-  const [requiredSteps, setRequiredSteps] = useState("");
+  const [requiredSteps, setRequiredSteps] = useState([]);
 
   useEffect(() => {
     if (checkFlag <= 1) {
@@ -126,11 +126,14 @@ const HomeScreen = () => {
         })
         .finally(() => {
           console.log(requiredSteps);
-
+          console.log(requiredSteps.userProfile);
+          console.log(requiredSteps.vaccinationDetails);
+          console.log(requiredSteps.searchPreferences);
           userProfileObj.flag = requiredSteps.userProfile;
           vaccinationDetailsObj.flag = requiredSteps.vaccinationDetails;
           clinicSearchPrefObj.flag = requiredSteps.searchPreferences;
 
+          console.log(userProfileObj.flag);
           required.push(userProfileObj);
           required.push(vaccinationDetailsObj);
           required.push(clinicSearchPrefObj);
@@ -196,9 +199,6 @@ const HomeScreen = () => {
         </View>
         <RequiredStepsView></RequiredStepsView>
         <View style={styles.innerContainer}>
-          <Text style={[styles.subtitle, { paddingTop: 30 }]}>Completed</Text>
-        </View>
-        <View style={styles.innerContainer}>
           <Text style={[styles.subtitle, { paddingTop: 30 }]}>
             {" "}
             What would you like to do?{" "}
@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     padding: "3%",
+    marginTop: "5%",
   },
   stepsContainer: {
     marginLeft: 10,

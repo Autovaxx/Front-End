@@ -3,7 +3,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserDocument } from "../firebase/firebase-getUserData";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import {
   Avatar,
   Title,
@@ -15,13 +15,14 @@ import {
   List,
   Divider,
 } from "react-native-paper";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import LoadingIndicator from "../screen-functionality/LoadingIndicator";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { address } from "../firebase/database-models";
 
-const ProfileScreenMain = () => {
+const ProfileScreenMain = ({ navigation }) => {
   const [userData, setUserData] = useState([]);
   const [emergencyContactData, setEmergencyContactData] = useState([]);
   const [addressData, setAddressData] = useState([]);
@@ -29,8 +30,6 @@ const ProfileScreenMain = () => {
 
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
-
-  const navigation = useNavigation();
 
   useEffect(() => {
     getUserDocument(auth.currentUser.uid)
@@ -56,6 +55,14 @@ const ProfileScreenMain = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleHome = () => {
+    navigation.navigate("Home");
+  };
+
+  const handleEdit = () => {
+    navigation.navigate("EditProfile");
+  };
+
   if (loading) {
     return <LoadingIndicator></LoadingIndicator>;
   }
@@ -64,6 +71,9 @@ const ProfileScreenMain = () => {
       <ScrollView>
         <View>
           <Card>
+            <TouchableOpacity onPress={handleHome}>
+              <Ionicons name="arrow-back" size={25} color="#fb3a6a" />
+            </TouchableOpacity>
             <Card.Cover
               source={{
                 uri: "https://cdn-icons-png.flaticon.com/512/2960/2960006.png",
@@ -131,9 +141,7 @@ const ProfileScreenMain = () => {
         icon="account-edit-outline"
         mode="text"
         textColor="#0000FF"
-        onPress={() => {
-          navigation.navigate("EditProfile");
-        }}
+        onPress={handleEdit}
       >
         Edit Profile
       </Button>

@@ -85,8 +85,10 @@ const ProfileScreenEdit = ({ navigation }) => {
 
       "emergency contact.firstName": firstNameEC,
       "emergency contact.lastName": lastNameEC,
-      "emergency contact.phone": phoneEC,
+      "emergency contact.phoneNumber": phoneEC,
       "emergency contact.relationship": relationshipEC,
+
+      "required_steps.userProfile": true,
     });
 
     navigation.navigate("Profile");
