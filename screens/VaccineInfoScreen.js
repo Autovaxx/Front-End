@@ -10,6 +10,7 @@ import {
   TextInput,
   Platform,
 } from "react-native";
+import { getFirestore, updateDoc, doc } from "@firebase/firestore/lite";
 import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { getUserDocument } from "../firebase/firebase-getUserData";
@@ -47,6 +48,7 @@ const VaccineInfoScreen = ({ navigation }) => {
 
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
   useEffect(() => {
     getUserDocument(auth.currentUser.uid)
@@ -61,7 +63,7 @@ const VaccineInfoScreen = ({ navigation }) => {
     { key: "3", value: "3" },
   ];
 
-  const brands = ["Pfizer", "Moderna", "Johnson", "Astra Zenica"];
+  const brands = ["Pfizer", "Moderna", "Johnson", "AstraZeneca"];
 
   const handleHome = () => {
     navigation.navigate("Home");
@@ -79,31 +81,48 @@ const VaccineInfoScreen = ({ navigation }) => {
     setDatePicker3(!datePicker3);
   };
 
-  const updateData = () => {
+  const updateData = async () => {
     try {
       updateUserDoc(auth.currentUser.uid, {
         ["previous vaccines"]: {
           vaccines: [
             numVaccines > 0 && {
               brand: vaccine1Brand,
-              dateOfVaccine: vaccine1Date.toLocaleDateString(),
+              dateOfVaccine:
+                vaccine1Date.getFullYear() +
+                "-" +
+                (vaccine1Date.getMonth() + 1) +
+                "-" +
+                vaccine1Date.getDate(),
               location: vaccine1Location,
             },
             numVaccines > 1 && {
               brand: vaccine2Brand,
-              dateOfVaccine: vaccine2Date.toLocaleDateString(),
+              dateOfVaccine:
+                vaccine2Date.getFullYear() +
+                "-" +
+                (vaccine2Date.getMonth() + 1) +
+                "-" +
+                vaccine2Date.getDate(),
               location: vaccine2Location,
             },
             numVaccines > 2 && {
               brand: vaccine3Brand,
-              dateOfVaccine: vaccine3Date.toLocaleDateString(),
+              dateOfVaccine:
+                vaccine3Date.getFullYear() +
+                "-" +
+                (vaccine3Date.getMonth() + 1) +
+                "-" +
+                vaccine3Date.getDate(),
               location: vaccine3Location,
             },
           ],
         },
       });
-      updateUserDoc(auth.currentUser.uid, {
-        vaccinationDetails: true,
+      const userDocRef = doc(db, "users", auth.currentUser.uid);
+
+      await updateDoc(userDocRef, {
+        "required_steps.vaccinationDetails": true,
       });
       navigation.navigate("Home");
     } catch (e) {

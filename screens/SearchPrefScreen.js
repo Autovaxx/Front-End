@@ -11,7 +11,8 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { getFirestore, updateDoc, doc } from "@firebase/firestore/lite";
+import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
 import CustomDatePicker from "../components/datePicker";
@@ -20,17 +21,20 @@ import SelectList from "react-native-dropdown-select-list";
 const SearchPrefScreen = ({ navigation }) => {
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
   const pharmacies = ["Shoppers", "Rexall", "Metro"];
   const vaccinationPrefs = [
-    "AstraZenca",
+    "AstraZeneca",
     "Pfizer",
     "Moderna",
     "Johnson & Johnson",
   ];
+  const vaccinationDoses = ["1", "2", "3"];
 
   const [pharmacy, setPharmacy] = useState("");
   const [vaccinationPref, setVaccinationPref] = useState("");
+  const [vaccinationDose, setVaccinationDose] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -40,34 +44,29 @@ const SearchPrefScreen = ({ navigation }) => {
   };
   const StatusBarHeight = Constants.StatusBarHeight;
 
-  useEffect(() => {
-    getUserDocument(auth.currentUser.uid)
-      .then((fetchedUserData) => JSON.parse(fetchedUserData))
-      .then((fetchedUserData_json) => {
-        setPharmacy(fetchedUserData_json["search_preference"]["pharmacy"]);
-        setVaccinationPref(
-          fetchedUserData_json["search_preference"]["vaccinationPref"]
-        );
-        setEndDate(fetchedUserData_json["search_preference"]["endDate"]);
-        setStartDate(fetchedUserData_json["search_preference"]["startDate"]);
-      })
-      .catch((error) => console.log(`Could not get apt data: ER ${error}`));
-  }, []);
-
-  const updateData = () => {
+  const updateData = async () => {
     try {
       updateUserDoc(auth.currentUser.uid, {
         search_preference: {
           pharmacy: pharmacy,
-          vaccinationPref: vaccinationPref,
-          startDate: startDate.toLocaleDateString(),
-          endDate: endDate.toLocaleDateString(),
+          vaccinationPref: vaccinationPref + " dose " + vaccinationDose,
+          startDate:
+            startDate.getFullYear() +
+            "-" +
+            (startDate.getMonth() + 1) +
+            "-" +
+            startDate.getDate(),
+          endDate:
+            endDate.getFullYear() +
+            "-" +
+            (endDate.getMonth() + 1) +
+            "-" +
+            endDate.getDate(),
         },
       });
-      updateUserDoc(auth.currentUser.uid, {
-        required_steps: {
-          searchPreferences: true,
-        },
+      const userDocRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(userDocRef, {
+        "required_steps.searchPreferences": true,
       });
       navigation.navigate("Home");
     } catch (error) {
@@ -128,7 +127,7 @@ const SearchPrefScreen = ({ navigation }) => {
           <SelectList
             setSelected={setPharmacy}
             data={pharmacies}
-            placeholder={pharmacy}
+            placeholder="Pharmacy"
             search={false}
             arrowicon={<Ionicons name="arrow-down" size={24} color="#2699FB" />}
             inputStyles={{ marginBottom: "1.5%" }}
@@ -141,18 +140,42 @@ const SearchPrefScreen = ({ navigation }) => {
           />
         </View>
         <View style={styles.innerTitleContainer}>
-          <Text style={styles.subtitle}>Vaccinaiton Preference</Text>
+          <Text style={styles.subtitle}>Vaccination Preference</Text>
         </View>
         <View>
           <Text style={styles.subtitleText}>
-            Select the type of vaccine you wish to recieve.
+            Select the type of vaccine you wish to receive.
           </Text>
         </View>
         <View>
           <SelectList
             setSelected={setVaccinationPref}
             data={vaccinationPrefs}
-            placeholder={vaccinationPref}
+            placeholder="Brand"
+            search={false}
+            arrowicon={<Ionicons name="arrow-down" size={24} color="#2699FB" />}
+            inputStyles={{ marginBottom: "1.5%" }}
+            boxStyles={{
+              borderColor: "#FB2876",
+              borderWidth: 1,
+              borderRadius: 8,
+              marginBottom: "1.5%",
+            }}
+          />
+        </View>
+        <View style={styles.innerTitleContainer}>
+          <Text style={styles.subtitle}>Vaccination Dose</Text>
+        </View>
+        <View>
+          <Text style={styles.subtitleText}>
+            Select the vaccine dose you wish to receive.
+          </Text>
+        </View>
+        <View>
+          <SelectList
+            setSelected={setVaccinationDose}
+            data={vaccinationDoses}
+            placeholder="Dose"
             search={false}
             arrowicon={<Ionicons name="arrow-down" size={24} color="#2699FB" />}
             inputStyles={{ marginBottom: "1.5%" }}
