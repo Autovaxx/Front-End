@@ -186,11 +186,6 @@ const HomeScreen = () => {
         </View>
         <RequiredStepsView></RequiredStepsView>
         <View style={styles.innerContainer}>
-          <Text style={[styles.subtitle, { paddingTop: 30 }]}>
-            Completed
-          </Text>
-        </View>
-        <View style={styles.innerContainer}>
           <Text style={[styles.subtitle, { paddingTop: 30 }]}> What would you like to do? </Text>
         </View>
         <View style={styles.parentBtnContainer}>
