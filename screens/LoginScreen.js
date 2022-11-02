@@ -16,8 +16,6 @@ import Logo from "../assets/logo.png";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
-import { getUserDocument } from "../firebase/firebase-getUserData"
-
 
 const LoginScreen = ({ navigation }) => {
   const { height } = useWindowDimensions();
@@ -28,16 +26,16 @@ const LoginScreen = ({ navigation }) => {
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
 
-  // Making sure the user is authenticated before navigating the user over. 
-  // Also creating an event listener to keep track of auth state. 
-  useEffect( () => {
-     const unsubscribe = auth.onAuthStateChanged(user => {
-      if(user) {
-        navigation.replace('Home')
+  // Making sure the user is authenticated before navigating the user over.
+  // Also creating an event listener to keep track of auth state.
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.replace("Home");
       }
-     })
-     return unsubscribe;
-  })
+    });
+    return unsubscribe;
+  });
 
   const goToRegister = () => {
     navigation.navigate("CreateAccount");
@@ -50,12 +48,10 @@ const LoginScreen = ({ navigation }) => {
         console.log("signed in");
         const user = userCredential.user;
         console.log(user);
-        
 
         // navigation.navigate("Home");
         // getUserDocument(userCredential.user.uid)
         // console.log(`This is the user document: \n`);
-
       })
       .catch((error) => {
         console.log(error);

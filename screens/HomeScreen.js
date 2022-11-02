@@ -5,29 +5,32 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
-  BackHandler
+  BackHandler,
 } from "react-native";
-import { Button } from 'react-native-paper'
-import React, { Component, useEffect, useState } from "react";
+import { Button } from "react-native-paper";
+import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase/firebase-config";
 import { getUserDocument } from "../firebase/firebase-getUserData";
-import { useRoute, useFocusEffect } from '@react-navigation/native';
-import { getAuth, signOut } from "firebase/auth";
+import { useRoute, useFocusEffect } from "@react-navigation/native";
+import { getAuth } from "firebase/auth";
 
 const required = [];
-let checkFlag = 1
+let checkFlag = 1;
 
 export function RequiredStepsView() {
-
   return required.map((step, i) => {
     return (
       <TouchableOpacity key={i} onPress={step.route}>
         <View style={styles.stepsContainer}>
-          {step.flag ?  <Ionicons name="checkmark-circle" size={25} color="#2fea6e" /> : <Ionicons name="close-circle" size={25} color="#ff0000" />} 
+          {step.flag ? (
+            <Ionicons name="checkmark-circle" size={25} color="#2fea6e" />
+          ) : (
+            <Ionicons name="close-circle" size={25} color="#ff0000" />
+          )}
           <View style={styles.innerStepsContainer}>
             <Text style={styles.steps}>{step.name}</Text>
             <Ionicons name="arrow-forward" size={25} color="#fb3a6a" />
@@ -71,21 +74,19 @@ export function OptionButtons() {
 }
 
 const HomeScreen = () => {
-
   const StatusBarHeight = Constants.StatusBarHeight;
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
-  const navigation = useNavigation()
-  const route = useRoute()
-
+  const navigation = useNavigation();
+  const route = useRoute();
 
   const handleProfile = () => {
     navigation.navigate("Profile");
   };
-  
+
   const handleEditProfile = () => {
-    navigation.navigate("EditProfile")
-  }
+    navigation.navigate("EditProfile");
+  };
 
   const handleVaccinations = () => {
     navigation.navigate("VaccineInfo");
@@ -95,23 +96,42 @@ const HomeScreen = () => {
     navigation.navigate("SearchPref");
   };
 
-  const userProfileObj = { id: 1, name: "User profile", route: handleEditProfile }
-  const vaccinationDetailsObj = { id: 2, name: "Vaccination details", route: handleVaccinations }
-  const clinicSearchPrefObj = { id: 3, name: "Clinic search preferences", route: handleSearchPref }
+  const userProfileObj = {
+    id: 1,
+    name: "User profile",
+    route: handleEditProfile,
+  };
+  const vaccinationDetailsObj = {
+    id: 2,
+    name: "Vaccination details",
+    route: handleVaccinations,
+  };
+  const clinicSearchPrefObj = {
+    id: 3,
+    name: "Clinic search preferences",
+    route: handleSearchPref,
+  };
 
-  const [requiredSteps, setRequiredSteps] = useState("")
+  const [requiredSteps, setRequiredSteps] = useState([]);
 
   useEffect(() => {
-
     if (checkFlag <= 1) {
-
       getUserDocument(auth.currentUser.uid)
         .then((data) => JSON.parse(data))
         .then((data_json) => {
-          setRequiredSteps(data_json['required_steps'])
+          setRequiredSteps(data_json["required_steps"]);
         })
-        .catch((error) => { console.log(`Error: ${error}`) })
+        .catch((error) => {
+          console.log(`Error: ${error}`);
+        })
         .finally(() => {
+          console.log(requiredSteps);
+          console.log(requiredSteps.userProfile);
+          console.log(requiredSteps.vaccinationDetails);
+          console.log(requiredSteps.searchPreferences);
+          userProfileObj.flag = requiredSteps.userProfile;
+          vaccinationDetailsObj.flag = requiredSteps.vaccinationDetails;
+          clinicSearchPrefObj.flag = requiredSteps.searchPreferences;
 
           console.log(requiredSteps)
 
@@ -124,40 +144,38 @@ const HomeScreen = () => {
           required.push(clinicSearchPrefObj)
           
           // Only route to the Profile display if its completed
-          if(requiredSteps.userProfile){
-            userProfileObj.route = handleProfile
+          if (requiredSteps.userProfile) {
+            userProfileObj.route = handleProfile;
           }
 
-          checkFlag++
-        })
+          checkFlag++;
+        });
     }
-  })
+  });
 
-  // Disabling the devices built-in back button for the current home page 
+  // Disabling the devices built-in back button for the current home page
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
-        if (route.name === 'Home') {
+        if (route.name === "Home") {
           return true;
         } else {
           return false;
         }
-      }
-      BackHandler.addEventListener('hardwareBackPress', onBackPress)
+      };
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
       return () => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress)
-      }
-    }, [route]),
-  )
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [route])
+  );
 
   const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigation.replace("Login")
-      })
-  }
+    auth.signOut().then(() => {
+      navigation.replace("Login");
+    });
+  };
 
   return (
     <ScrollView>
@@ -191,21 +209,22 @@ const HomeScreen = () => {
         <View style={styles.parentBtnContainer}>
           <OptionButtons></OptionButtons>
         </View>
-
       </KeyboardAvoidingView>
-      <View style={{
-        marginTop: 25,
-      }}>
+      <View
+        style={{
+          marginTop: 25,
+        }}
+      >
         <Button
           icon="account-edit-outline"
           mode="text"
           textColor="black"
-          onPress={(handleSignOut)}>
+          onPress={handleSignOut}
+        >
           Sign Out
         </Button>
       </View>
     </ScrollView>
-
   );
 };
 
@@ -238,6 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     padding: "3%",
+    marginTop: "5%",
   },
   stepsContainer: {
     marginLeft: 10,
