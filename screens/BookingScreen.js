@@ -30,33 +30,47 @@ export function Bookings() {
       .then((apt_data) => JSON.parse(apt_data))
       .then((apt_data_json) => setAptData(apt_data_json.appointment))
       .catch((error) => console.log("Could not get apt data"))
-      .finally(() => setLoading(false));
+      .finally(() => {setLoading(false)
+        console.log(aptData[0].booked)
+      });
   }, []);
 
   if (loading) {
     return <LoadingIndicator></LoadingIndicator>;
   }
 
-  return aptData.map((aptData, i) => {
+  return aptData.map((data, i) => {
     return (
+      <ScrollView>
       <View key={i}>
-        <Card>
-          <Card.Content>
-            <Title>{aptData.pharmacy}</Title>
+        {aptData[0].booked ? 
+        <Card >
+          <Card.Content >
+            <Title style={{marginBottom:20}}>{data.vaccine}</Title>
             <DataTable>
               <DataTable.Row>
-                <DataTable.Cell>{aptData.pharmacy_address}</DataTable.Cell>
+                <Text>{data.pharmacy}</Text>
               </DataTable.Row>
               <DataTable.Row>
-                <DataTable.Cell>{aptData.vaccine}</DataTable.Cell>
-                <DataTable.Cell>{aptData.date}</DataTable.Cell>
-                <DataTable.Cell>{aptData.time}</DataTable.Cell>
+              <Text style={{marginTop:8}}>{data.pharmacy_address}</Text>
+              </DataTable.Row>
+              <DataTable.Row>
+              <Text style={{marginTop:13}}>{data.pharmacy_address_pcode_city}</Text>
+              </DataTable.Row>
+              <DataTable.Row>
+                <Text style={{marginTop:13}}>{data.dateTime}</Text>
               </DataTable.Row>
             </DataTable>
-            <Button>{aptData.booked ? "Booked" : "Waitlisted"}</Button>
+            <Button>{data.booked ? "Booked" : "Waitlisted"}</Button>
           </Card.Content>
         </Card>
+        :
+        <View style={styles.noBookingContainer}>
+          <Text> You have no booked appointments </Text>
+        </View>
+        }
       </View>
+      </ScrollView>
     );
   });
 }
@@ -156,6 +170,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
+  noBookingContainer: {
+    marginTop: '50%',
+    marginBottom: '50%',
+    alignItems: 'center',
+    justifyContent: 'center'
+},
+vAlignText: {
+  container :{
+    justifyContent: 'center', //Centered horizontally
+    alignItems: 'center', //Centered vertically
+    flex:1
+ }
+}
 });
 
 // Used to store our appointments

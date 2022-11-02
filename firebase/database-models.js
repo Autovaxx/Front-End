@@ -12,10 +12,10 @@ const address = {
 const appointment = [
   {
     booked: false,
-    date: "",
+    dateTime: "",
     pharmacy: "",
     pharmacy_address: "",
-    time: "",
+    pharmacy_address_pcode_city: "",
     vaccine: "",
   },
 ];
@@ -63,6 +63,7 @@ const search_preference = {
   vaccinationPref: "",
   startDate: "",
   endDate: "",
+  radius: ""
 };
 
 export {
