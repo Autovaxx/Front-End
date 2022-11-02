@@ -17,6 +17,7 @@ import { firebaseConfig } from "../firebase/firebase-config";
 import { getUserDocument } from "../firebase/firebase-getUserData";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import axios from "axios";
 
 const required = [];
@@ -78,33 +79,37 @@ export function OptionButtons() {
   // Book Appointment Modals
   const [visibleModalConfirm, setVisibleModalConfirm] = React.useState(false);
   const [visibleModalBook, setVisibleModalBook] = React.useState(false);
-  const [visibleRequiredStepsAlert, setVisibleRequiredStepsAlert] = React.useState(false);
+  const [visibleRequiredStepsAlert, setVisibleRequiredStepsAlert] =
+    React.useState(false);
 
-  const containerStyle = { backgroundColor: "white", padding: 20, height: '50%', borderRadius: 10, borderWidth: 1, alignItems: 'center'
-
- };
+  const containerStyle = {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignItems: "center",
+  };
 
   // Functions that update the two modal states. Used with on-click events within modal.
   const showModalConfirm = () => setVisibleModalConfirm(true);
   const hideModalConfirm = () => setVisibleModalConfirm(false);
   const hideModalBook = () => setVisibleModalBook(false);
-  const requiredStepsModal = () => setVisibleRequiredStepsAlert(true)
-  const hideRequiredStepsModal = () => setVisibleRequiredStepsAlert(false)
+  const requiredStepsModal = () => setVisibleRequiredStepsAlert(true);
+  const hideRequiredStepsModal = () => setVisibleRequiredStepsAlert(false);
   const closeConfirmShowBookModals = () => {
     setVisibleModalConfirm(false);
     setVisibleModalBook(true);
-    handleBookAppointment()
+    handleBookAppointment();
   };
 
   const bookAptEnableDisable = () => {
-
-    if(required[0].flag && required[1].flag && required[2].flag){
-      showModalConfirm()
-    }else {
-      requiredStepsModal(true)
+    if (required[0].flag && required[1].flag && required[2].flag) {
+      showModalConfirm();
+    } else {
+      requiredStepsModal(true);
     }
-  }
-//requiredSteps.userProfile ? showModalConfirm: 
+  };
+  //requiredSteps.userProfile ? showModalConfirm:
   const buttons = [
     { id: 1, name: "Book Appointments", route: bookAptEnableDisable },
     { id: 2, name: "View Bookings", route: handleViewBookings },
@@ -115,85 +120,84 @@ export function OptionButtons() {
   return buttons.map((button, i) => {
     return (
       <ScrollView>
-      <View key={i} style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={button.route} style={styles.button}>
-          <Text style={styles.buttonText}>{button.name}</Text>
-        </TouchableOpacity>
+        <View
+          key={i}
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <TouchableOpacity onPress={button.route} style={styles.button}>
+            <Text style={styles.buttonText}>{button.name}</Text>
+          </TouchableOpacity>
 
-        <Portal >
-        <Modal
-            visible={visibleRequiredStepsAlert}
-            onDismiss={hideRequiredStepsModal}
-            contentContainerStyle={containerStyle}
-          >
-            <Text>
-              Please complete the required steps!
-            </Text>
-            <Button
-              icon="account-edit-outline"
-              mode="text"
-              textColor="black"
-              onPress={hideRequiredStepsModal}
+          <Portal>
+            <Modal
+              visible={visibleRequiredStepsAlert}
+              onDismiss={hideRequiredStepsModal}
+              contentContainerStyle={containerStyle}
             >
-              Ok
-            </Button>
-          </Modal>
-          <Modal
-            visible={visibleModalConfirm}
-            onDismiss={hideModalConfirm}
-            contentContainerStyle={containerStyle}
-          >
-            <Text>
-              Please ensure that the requird information you provided is
-              accurate prior to submitting as it will be cross-checked with your
-              provincial records.
-            </Text>
-            <Button
-              icon="account-edit-outline"
-              mode="text"
-              textColor="black"
-              onPress={closeConfirmShowBookModals}
+              <Text>Please complete the required steps!</Text>
+              <Button
+                icon="account-edit-outline"
+                mode="text"
+                textColor="black"
+                onPress={hideRequiredStepsModal}
+              >
+                Ok
+              </Button>
+            </Modal>
+            <Modal
+              visible={visibleModalConfirm}
+              onDismiss={hideModalConfirm}
+              contentContainerStyle={containerStyle}
             >
-              Yes
-            </Button>
+              <Text>
+                Please ensure that the required information you provided is
+                accurate prior to submitting as it will be cross-checked with
+                your provincial records.
+              </Text>
+              <Button
+                icon="check-circle-outline"
+                mode="text"
+                textColor="green"
+                onPress={closeConfirmShowBookModals}
+              >
+                Yes
+              </Button>
 
-            <Button
-              icon="account-edit-outline"
-              mode="text"
-              textColor="black"
-              onPress={hideModalConfirm}
-            >
-              No
-            </Button>
-          </Modal>
+              <Button
+                icon="close-circle-outline"
+                mode="text"
+                textColor="red"
+                onPress={hideModalConfirm}
+              >
+                No
+              </Button>
+            </Modal>
 
-          <Modal
-            visible={visibleModalBook}
-            onDismiss={hideModalBook}
-            contentContainerStyle={containerStyle}
-          >
-            <Text>
-              Your application has been successfully submitted. We will not
-              attempt to book you at your desired vaccination clinics that
-              matched your desired search filters. You can view all of your
-              bookings in the 'View Bookings' section.
-    
-              You will receive a confirmation email from a pharmacy once a
-              booking is made for you. Sit tight, we'll get the job done
-              shortly!
-            </Text>
-            <Button
-              icon="account-edit-outline"
-              mode="text"
-              textColor="black"
-              onPress={hideModalBook}
+            <Modal
+              visible={visibleModalBook}
+              onDismiss={hideModalBook}
+              contentContainerStyle={containerStyle}
             >
-              {" "}
-              Ok{" "}
-            </Button>
-          </Modal>
-        </Portal>
-      </View>
+              <Text>
+                Your application has been successfully submitted. We will not
+                attempt to book you at your desired vaccination clinics that
+                matched your desired search filters. You can view all of your
+                bookings in the 'View Bookings' section. You will receive a
+                confirmation email from a pharmacy once a booking is made for
+                you. Sit tight, we'll get the job done shortly!
+              </Text>
+              <Button
+                icon="check-circle-outline"
+                mode="text"
+                textColor="green"
+                onPress={hideModalBook}
+              >
+                {" "}
+                Ok{" "}
+              </Button>
+            </Modal>
+          </Portal>
+        </View>
       </ScrollView>
     );
   });
@@ -257,12 +261,6 @@ const HomeScreen = () => {
           console.log(requiredSteps.userProfile);
           console.log(requiredSteps.vaccinationDetails);
           console.log(requiredSteps.searchPreferences);
-          userProfileObj.flag = requiredSteps.userProfile;
-          vaccinationDetailsObj.flag = requiredSteps.vaccinationDetails;
-          clinicSearchPrefObj.flag = requiredSteps.searchPreferences;
-
-          console.log(requiredSteps);
-
           userProfileObj.flag = requiredSteps.userProfile;
           vaccinationDetailsObj.flag = requiredSteps.vaccinationDetails;
           clinicSearchPrefObj.flag = requiredSteps.searchPreferences;
