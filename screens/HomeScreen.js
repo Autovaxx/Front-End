@@ -69,12 +69,13 @@ export function OptionButtons() {
 
     axios({
       method: "POST",
-      url: "http://192.168.2.61:8080/",
+      url: "https://gentle-retreat-95298.herokuapp.com/",
       data: dataToSend,
       headers: {
         "Content-Type": "application/json",
       },
     });
+    console.log('handleBookAppointmentClicked')
   };
   // Book Appointment Modals
   const [visibleModalConfirm, setVisibleModalConfirm] = React.useState(false);
