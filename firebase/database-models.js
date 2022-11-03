@@ -58,7 +58,7 @@ const required_steps = {
   searchPreferences: false,
 };
 
-const search_preference = {
+const search_preferences = {
   pharmacy: "",
   vaccinationPref: "",
   startDate: "",
@@ -73,5 +73,5 @@ export {
   previous_vaccine,
   user_profile,
   required_steps,
-  search_preference,
+  search_preferences,
 };

@@ -47,9 +47,9 @@ const SearchPrefScreen = ({ navigation }) => {
   const updateData = async () => {
     try {
       updateUserDoc(auth.currentUser.uid, {
-        search_preference: {
+        search_preferences: {
           pharmacy: pharmacy,
-          vaccinationPref: vaccinationPref + " dose " + vaccinationDose,
+          vaccinationPref: vaccinationPref + " Dose " + vaccinationDose,
           startDate:
             startDate.getFullYear() +
             "-" +

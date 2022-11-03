@@ -30,8 +30,9 @@ export function Bookings() {
       .then((apt_data) => JSON.parse(apt_data))
       .then((apt_data_json) => setAptData(apt_data_json.appointment))
       .catch((error) => console.log("Could not get apt data"))
-      .finally(() => {setLoading(false)
-        console.log(aptData[0].booked)
+      .finally(() => {
+        setLoading(false);
+        //console.log(aptData[0].booked)
       });
   }, []);
 
@@ -42,34 +43,38 @@ export function Bookings() {
   return aptData.map((data, i) => {
     return (
       <ScrollView>
-      <View key={i}>
-        {aptData[0].booked ? 
-        <Card >
-          <Card.Content >
-            <Title style={{marginBottom:20}}>{data.vaccine}</Title>
-            <DataTable>
-              <DataTable.Row>
-                <Text>{data.pharmacy}</Text>
-              </DataTable.Row>
-              <DataTable.Row>
-              <Text style={{marginTop:8}}>{data.pharmacy_address}</Text>
-              </DataTable.Row>
-              <DataTable.Row>
-              <Text style={{marginTop:13}}>{data.pharmacy_address_pcode_city}</Text>
-              </DataTable.Row>
-              <DataTable.Row>
-                <Text style={{marginTop:13}}>{data.dateTime}</Text>
-              </DataTable.Row>
-            </DataTable>
-            <Button>{data.booked ? "Booked" : "Waitlisted"}</Button>
-          </Card.Content>
-        </Card>
-        :
-        <View style={styles.noBookingContainer}>
-          <Text> You have no booked appointments </Text>
+        <View key={i}>
+          {aptData[0].booked ? (
+            <Card>
+              <Card.Content>
+                <Title style={{ marginBottom: 20 }}>{data.vaccine}</Title>
+                <DataTable>
+                  <DataTable.Row>
+                    <Text>{data.pharmacy}</Text>
+                  </DataTable.Row>
+                  <DataTable.Row>
+                    <Text style={{ marginTop: 8 }}>
+                      {data.pharmacy_address}
+                    </Text>
+                  </DataTable.Row>
+                  <DataTable.Row>
+                    <Text style={{ marginTop: 13 }}>
+                      {data.pharmacy_address_pcode_city}
+                    </Text>
+                  </DataTable.Row>
+                  <DataTable.Row>
+                    <Text style={{ marginTop: 13 }}>{data.dateTime}</Text>
+                  </DataTable.Row>
+                </DataTable>
+                <Button>{data.booked ? "Booked" : "Waitlisted"}</Button>
+              </Card.Content>
+            </Card>
+          ) : (
+            <View style={styles.noBookingContainer}>
+              <Text> You have no booked appointments </Text>
+            </View>
+          )}
         </View>
-        }
-      </View>
       </ScrollView>
     );
   });
@@ -171,18 +176,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   noBookingContainer: {
-    marginTop: '50%',
-    marginBottom: '50%',
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-vAlignText: {
-  container :{
-    justifyContent: 'center', //Centered horizontally
-    alignItems: 'center', //Centered vertically
-    flex:1
- }
-}
+    marginTop: "50%",
+    marginBottom: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  vAlignText: {
+    container: {
+      justifyContent: "center", //Centered horizontally
+      alignItems: "center", //Centered vertically
+      flex: 1,
+    },
+  },
 });
 
 // Used to store our appointments

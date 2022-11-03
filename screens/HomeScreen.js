@@ -75,7 +75,7 @@ export function OptionButtons() {
         "Content-Type": "application/json",
       },
     });
-    console.log('handleBookAppointmentClicked')
+    console.log("handleBookAppointmentClicked");
   };
   // Book Appointment Modals
   const [visibleModalConfirm, setVisibleModalConfirm] = React.useState(false);
