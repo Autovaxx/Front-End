@@ -22,6 +22,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import SelectList from "react-native-dropdown-select-list";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
+// Screen starts here
 const VaccineInfoScreen = ({ navigation }) => {
   const StatusBarHeight = Constants.StatusBarHeight;
 
@@ -30,14 +31,22 @@ const VaccineInfoScreen = ({ navigation }) => {
 
   const [numVaccines, setNumVaccines] = useState(0);
 
+  /**
+   * vaccine data is stored as separate properties due to issues
+   * using object property syntax in the SelectList
+   * TODO: This is something I am hoping to resolve by the end of the semester
+   */
+  // vaccine 1
   const [vaccine1Brand, setVaccine1Brand] = useState("");
   const [vaccine1Date, setVaccine1Date] = useState(new Date());
   const [vaccine1Location, setVaccine1Location] = useState("");
 
+  // vaccine 2
   const [vaccine2Brand, setVaccine2Brand] = useState("");
   const [vaccine2Date, setVaccine2Date] = useState(new Date());
   const [vaccine2Location, setVaccine2Location] = useState("");
 
+  // vaccine 3
   const [vaccine3Brand, setVaccine3Brand] = useState("");
   const [vaccine3Date, setVaccine3Date] = useState(new Date());
   const [vaccine3Location, setVaccine3Location] = useState("");
@@ -46,16 +55,19 @@ const VaccineInfoScreen = ({ navigation }) => {
   const [datePicker2, setDatePicker2] = useState(false);
   const [datePicker3, setDatePicker3] = useState(false);
 
+  // app, auth, and db access
   const app = initializeApp(firebaseConfig, "autovaxx");
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  // on component load -> fetch and parse DB data for authenticated user
   useEffect(() => {
     getUserDocument(auth.currentUser.uid)
       .then((fetchedUserData) => JSON.parse(fetchedUserData))
       .catch((e) => console.log(`Error fetching data: ${e}`));
   }, []);
 
+  // vaccine options for SelectList (must be an array)
   const dropDownData = [
     { key: "0", value: "0" },
     { key: "1", value: "1" },
@@ -63,27 +75,43 @@ const VaccineInfoScreen = ({ navigation }) => {
     { key: "3", value: "3" },
   ];
 
+  // brand options for SelectList (must be an array)
   const brands = ["Pfizer", "Moderna", "Johnson", "AstraZeneca"];
 
+  // navigate to home page
   const handleHome = () => {
     navigation.navigate("Home");
   };
 
+  /**
+   * Unfortunately, I need three instances of DatePicker
+   * Using one DatePicker instance 3 times would cause all
+   * 3 fields to display a calendar anytime one field was selected
+   */
+  // toggle visibility for datePicker1
   const changeDatePicker1 = () => {
     setDatePicker1(!datePicker1);
   };
 
+  // toggle visibility for datePicker2
   const changeDatePicker2 = () => {
     setDatePicker2(!datePicker2);
   };
 
+  // toggle visibility for datePicker3
   const changeDatePicker3 = () => {
     setDatePicker3(!datePicker3);
   };
 
+  /**
+   * Async function to update the "previous vaccine"
+   * object in Firebase. It will override any values that
+   * are already stored in DB
+   */
   const updateData = async () => {
     try {
       updateUserDoc(auth.currentUser.uid, {
+        // build object to send to DB
         ["previous vaccines"]: {
           vaccines: [
             numVaccines > 0 && {
@@ -121,15 +149,18 @@ const VaccineInfoScreen = ({ navigation }) => {
       });
       const userDocRef = doc(db, "users", auth.currentUser.uid);
 
+      // run a blocking thread for the update task
       await updateDoc(userDocRef, {
         "required_steps.vaccinationDetails": true,
       });
+      // navigate to home screen after updating
       navigation.navigate("Home");
     } catch (e) {
       console.log(`Error updating db: ${e}`);
     }
   };
 
+  // User Interface
   return (
     <ScrollView>
       <KeyboardAvoidingView
@@ -151,6 +182,7 @@ const VaccineInfoScreen = ({ navigation }) => {
           Please fill out your vaccination details below
         </Text>
 
+        {/* Displays input container for first vaccine  */}
         {numVaccines > 0 && (
           <View>
             <Text style={styles.subtitle}>Covid-19 Dose 1 Information</Text>
@@ -225,6 +257,7 @@ const VaccineInfoScreen = ({ navigation }) => {
           </View>
         )}
 
+        {/* Displays input container for second vaccine  */}
         {numVaccines > 1 && (
           <View style={{ paddingTop: "3%" }}>
             <Text style={styles.subtitle}>Covid-19 Dose 2 Information</Text>
@@ -300,6 +333,7 @@ const VaccineInfoScreen = ({ navigation }) => {
           </View>
         )}
 
+        {/* Displays input container for third vaccine  */}
         {numVaccines > 2 && (
           <View style={{ paddingTop: "3%" }}>
             <Text style={styles.subtitle}>Covid-19 Dose 3 Information</Text>
@@ -375,6 +409,7 @@ const VaccineInfoScreen = ({ navigation }) => {
           </View>
         )}
 
+        {/* call updateData() to perform DB operations */}
         <TouchableOpacity onPress={updateData} style={styles.submitButton}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
@@ -435,6 +470,7 @@ const VaccineInfoScreen = ({ navigation }) => {
 
 export default VaccineInfoScreen;
 
+// style sheet
 const styles = StyleSheet.create({
   container: {
     flex: 1,
